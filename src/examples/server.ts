@@ -12,11 +12,12 @@ const app = express();
     keepAlive: true,
   })
 
+
   // Prepare the scraper
   // Loading it in memory
   await scraper.setup()
 
-  // Usage: http://localhost:3000/?url=https://www.linkedin.com/in/jvandenaardweg/
+  // Usage: http://localhost:3000/?url=https://www.linkedin.com/in/dmitriy-karpenko/
   app.get('/', async (req, res) => {
     const urlToScrape = req.query.url as string;
 

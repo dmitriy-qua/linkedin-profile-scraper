@@ -53,100 +53,6 @@ export interface Experience {
   description: string | null;
 }
 
-interface RawCertification {
-  name: string | null;
-  issuingOrganization: string | null;
-  issueDate: string | null;
-  expirationDate: string | null;
-}
-
-interface Certification {
-  name: string | null;
-  issuingOrganization: string | null;
-  issueDate: string | null;
-  expirationDate: string | null;
-}
-
-interface RawEducation {
-  schoolName: string | null;
-  degreeName: string | null;
-  fieldOfStudy: string | null;
-  startDate: string | null;
-  endDate: string | null;
-}
-
-export interface Education {
-  schoolName: string | null;
-  degreeName: string | null;
-  fieldOfStudy: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  durationInDays: number | null;
-}
-
-interface RawVolunteerExperience {
-  title: string | null;
-  company: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  endDateIsPresent: boolean;
-  description: string | null;
-}
-
-export interface VolunteerExperience {
-  title: string | null;
-  company: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  endDateIsPresent: boolean;
-  durationInDays: number | null;
-  description: string | null;
-}
-
-export interface RawOrganizationAccomplishments {
-  name: string | null;
-  position: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  endDateIsPresent: boolean;
-  description: string | null;
-}
-
-export interface OrganizationAccomplishments {
-  name: string | null;
-  position: string | null;
-  startDate: string | Date | null;
-  endDate: string | Date | null;
-  endDateIsPresent: boolean;
-  durationInDays: number | null;
-  description: string | null;
-}
-
-export interface RawLanguageAccomplishments {
-  language: string | null;
-  proficiency: string | null;
-}
-
-export interface LanguageAccomplishments {
-  language: string | null;
-  proficiency: string | null;
-}
-
-export interface RawProjectAccomplishments {
-  name: string | null;
-  description: string | null;
-}
-
-export interface ProjectAccomplishments {
-  name: string | null;
-  description: string | null;
-}
-
-export interface Skill {
-  skillName: string | null;
-  endorsementCount: number | null;
-}
-
 interface ScraperUserDefinedOptions {
   /**
    * The LinkedIn `li_at` session cookie value. Get this value by logging in to LinkedIn with the account you want to use for scraping.
@@ -681,8 +587,9 @@ export class LinkedInProfileScraper {
         const photoElement = profileSection?.querySelector('.pv-top-card-profile-picture__image.pv-top-card-profile-picture__image--show') || profileSection?.querySelector('.profile-photo-edit__preview')
         const photo = photoElement?.getAttribute('src') || null
 
-        const descriptionElement = document.querySelector('.pv-about-section') // Is outside "profileSection"
+        const descriptionElement = document.querySelector('.pv-shared-text-with-see-more') // Is outside "profileSection"
         const description = descriptionElement?.textContent || null
+
 
         return {
           fullName,
@@ -708,12 +615,14 @@ export class LinkedInProfileScraper {
 
       statusLog(logSection, `Parsing experiences data...`, scraperSessionId)
 
-      const rawExperiencesData: RawExperience[] = await page.$$eval('#experience-section ul > .ember-view, #experience-section .pv-entity__position-group-role-item-fading-timeline, #experience-section .pv-entity__position-group-role-item', (nodes) => {
+      const rawExperiencesData: RawExperience[] = await page.$$eval(".pvs-list__outer-container.ul.pvs-list.ph5.display-flex.flex-row.flex-wrap", (nodes) => {
+
         let data: RawExperience[] = []
         let currentCompanySummary: object = {};
-        
+
         // Using a for loop so we can use await inside of it
         for (const node of nodes) {
+
           let title, employmentType, company, description, startDate, endDate, dateRangeText, endDateIsPresent, location;
           if (node.querySelector('.pv-entity__company-summary-info') != null) {
             const companyElement = node.querySelector('.pv-entity__company-summary-info span:nth-child(2)');
@@ -721,7 +630,7 @@ export class LinkedInProfileScraper {
 
             const descriptionElement = node.querySelector('.pv-entity__description');
             currentCompanySummary[''] = descriptionElement?.textContent || null
-            
+
             continue;
           }
           if (node.querySelector('[data-control-name="background_details_company"]') != null) {
@@ -741,12 +650,12 @@ export class LinkedInProfileScraper {
 
             const employmentTypeElement = node.querySelector('span.pv-entity__secondary-title');
             employmentType = employmentTypeElement?.textContent || null
-          
+
             const companyElement = node.querySelector('.pv-entity__secondary-title');
             const companyElementClean = companyElement && companyElement?.querySelector('span') ? companyElement?.removeChild(companyElement.querySelector('span') as Node) && companyElement : companyElement || null;
             company = companyElementClean?.textContent || null
           }
-          
+
           const descriptionElement = node.querySelector('.pv-entity__description');
           description = descriptionElement?.textContent || null
 
@@ -818,323 +727,6 @@ export class LinkedInProfileScraper {
 
       statusLog(logSection, `Got experiences data: ${JSON.stringify(experiences)}`, scraperSessionId)
 
-      statusLog(logSection, `Parsing education data...`, scraperSessionId)
-
-      const rawCertificationData: RawCertification[] = await page.$$eval('#certifications-section ul > .ember-view', (nodes) => {
-        // Note: the $$eval context is the browser context.
-        // So custom methods you define in this file are not available within this $$eval.
-        let data: RawCertification[] = []
-        for (const node of nodes) {
-
-          const nameElement = node.querySelector('h3');
-          const name = nameElement?.textContent || null;
-
-          const issuingOrganizationElement = node.querySelector('p span:nth-child(2)');
-          const issuingOrganization = issuingOrganizationElement?.textContent || null;
-
-          const expirationDateElement = node.querySelector('.pv-entity__bullet-item-v2');
-          const expirationDate = expirationDateElement?.textContent || null;
-
-          let issueDate;
-          if (expirationDate) {
-            const issueDateElement = node.querySelectorAll('p span:not(.pv-entity__bullet-item-v2)')[3];
-            issueDate = issueDateElement?.textContent?.replace(expirationDate, '') || null;
-          } else {
-            issueDate = null;
-          }
-          
-          data.push({
-            name,
-            issuingOrganization,
-            issueDate,
-            expirationDate
-          })
-        }
-
-        return data
-      });
-
-      // Convert the raw data to clean data using our utils
-      // So we don't have to inject our util methods inside the browser context, which is too damn difficult using TypeScript
-      const certifications: Certification[] = rawCertificationData.map(rawCertification => {
-        return {
-          ...rawCertification,
-          name: getCleanText(rawCertification.name),
-          issuingOrganization: getCleanText(rawCertification.issuingOrganization),
-          issueDate: getCleanText(rawCertification.issueDate),
-          expirationDate: getCleanText(rawCertification.expirationDate)
-        }
-      })
-
-      statusLog(logSection, `Got certification data: ${JSON.stringify(certifications)}`, scraperSessionId)
-
-      statusLog(logSection, `Parsing education data...`, scraperSessionId)
-
-      const rawEducationData: RawEducation[] = await page.$$eval('#education-section ul > .ember-view', (nodes) => {
-        // Note: the $$eval context is the browser context.
-        // So custom methods you define in this file are not available within this $$eval.
-        let data: RawEducation[] = []
-        for (const node of nodes) {
-
-          const schoolNameElement = node.querySelector('h3.pv-entity__school-name');
-          const schoolName = schoolNameElement?.textContent || null;
-
-          const degreeNameElement = node.querySelector('.pv-entity__degree-name .pv-entity__comma-item');
-          const degreeName = degreeNameElement?.textContent || null;
-
-          const fieldOfStudyElement = node.querySelector('.pv-entity__fos .pv-entity__comma-item');
-          const fieldOfStudy = fieldOfStudyElement?.textContent || null;
-
-          // const gradeElement = node.querySelector('.pv-entity__grade .pv-entity__comma-item');
-          // const grade = (gradeElement && gradeElement.textContent) ? window.getCleanText(fieldOfStudyElement.textContent) : null;
-
-          const dateRangeElement = node.querySelectorAll('.pv-entity__dates time');
-
-          const startDatePart = dateRangeElement && dateRangeElement[0]?.textContent || null;
-          const startDate = startDatePart || null
-
-          const endDatePart = dateRangeElement && dateRangeElement[1]?.textContent || null;
-          const endDate = endDatePart || null
-
-          data.push({
-            schoolName,
-            degreeName,
-            fieldOfStudy,
-            startDate,
-            endDate
-          })
-        }
-
-        return data
-      });
-
-      // Convert the raw data to clean data using our utils
-      // So we don't have to inject our util methods inside the browser context, which is too damn difficult using TypeScript
-      const education: Education[] = rawEducationData.map(rawEducation => {
-        const startDate = formatDate(rawEducation.startDate)
-        const endDate = formatDate(rawEducation.endDate)
-
-        return {
-          ...rawEducation,
-          schoolName: getCleanText(rawEducation.schoolName),
-          degreeName: getCleanText(rawEducation.degreeName),
-          fieldOfStudy: getCleanText(rawEducation.fieldOfStudy),
-          startDate,
-          endDate,
-          durationInDays: getDurationInDays(startDate, endDate),
-        }
-      })
-
-      statusLog(logSection, `Got education data: ${JSON.stringify(education)}`, scraperSessionId)
-
-      statusLog(logSection, `Parsing volunteer experience data...`, scraperSessionId)
-
-      const rawVolunteerExperiences: RawVolunteerExperience[] = await page.$$eval('.pv-profile-section.volunteering-section ul > li.ember-view', (nodes) => {
-        // Note: the $$eval context is the browser context.
-        // So custom methods you define in this file are not available within this $$eval.
-        let data: RawVolunteerExperience[] = []
-        for (const node of nodes) {
-
-          const titleElement = node.querySelector('.pv-entity__summary-info h3');
-          const title = titleElement?.textContent || null;
-          
-          const companyElement = node.querySelector('.pv-entity__summary-info span.pv-entity__secondary-title');
-          const company = companyElement?.textContent || null;
-
-          const dateRangeElement = node.querySelector('.pv-entity__date-range span:nth-child(2)');
-          const dateRangeText = dateRangeElement?.textContent || null
-          const startDatePart = dateRangeText?.split('–')[0] || null;
-          const startDate = startDatePart?.trim() || null;
-
-          const endDatePart = dateRangeText?.split('–')[1] || null;
-          const endDateIsPresent = endDatePart?.trim().toLowerCase() === 'present' || false;
-          const endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
-
-          const descriptionElement = node.querySelector('.pv-entity__description')
-          const description = descriptionElement?.textContent || null;
-
-          data.push({
-            title,
-            company,
-            startDate,
-            endDate,
-            endDateIsPresent,
-            description
-          })
-        }
-
-        return data
-      });
-
-      // Convert the raw data to clean data using our utils
-      // So we don't have to inject our util methods inside the browser context, which is too damn difficult using TypeScript
-      const volunteerExperiences: VolunteerExperience[] = rawVolunteerExperiences.map(rawVolunteerExperience => {
-        const startDate = formatDate(rawVolunteerExperience.startDate)
-        const endDate = formatDate(rawVolunteerExperience.endDate)
-
-        return {
-          ...rawVolunteerExperience,
-          title: getCleanText(rawVolunteerExperience.title),
-          company: getCleanText(rawVolunteerExperience.company),
-          description: getCleanText(rawVolunteerExperience.description),
-          startDate,
-          endDate,
-          durationInDays: getDurationInDays(startDate, endDate),
-        }
-      })
-
-      statusLog(logSection, `Got volunteer experience data: ${JSON.stringify(volunteerExperiences)}`, scraperSessionId)
-
-      statusLog(logSection, `Parsing skills data...`, scraperSessionId)
-
-      const skills: Skill[] = await page.$$eval('.pv-skill-categories-section ol > .ember-view', nodes => {
-        // Note: the $$eval context is the browser context.
-        // So custom methods you define in this file are not available within this $$eval.
-
-        return nodes.map((node) => {
-          const skillName = node.querySelector('.pv-skill-category-entity__name-text');
-          const endorsementCount = node.querySelector('.pv-skill-category-entity__endorsement-count');
-
-          return {
-            skillName: (skillName) ? skillName.textContent?.trim() : null,
-            endorsementCount: (endorsementCount) ? parseInt(endorsementCount.textContent?.trim() || '0') : 0
-          } as Skill;
-        }) as Skill[]
-      });
-
-      statusLog(logSection, `Got skills data: ${JSON.stringify(skills)}`, scraperSessionId)
-
-      statusLog(logSection, `Parsing organization accomplishments data...`, scraperSessionId);
-
-      const orgAccButton = 'button[aria-label="Expand organizations section"][aria-expanded="false"]';
-      
-      if (await page.$(orgAccButton)) {
-        await page.click(orgAccButton);
-        await page.waitFor(100);
-      }
-
-      const rawOrganizationAccomplishments: RawOrganizationAccomplishments[] = await page.$$eval('.pv-profile-section.pv-accomplishments-block.organizations ul > li.ember-view', (nodes) => {
-        const data: RawOrganizationAccomplishments[] = [];
-
-        for (const node of nodes) {
-          const nameElement = node.querySelector('.pv-accomplishment-entity__title');
-          const name = nameElement?.textContent || null;
-
-          const positionElement = node.querySelector('.pv-accomplishment-entity__position');
-          const position = positionElement?.textContent || null;
-
-          const dateRangeElement = node.querySelector('.pv-accomplishment-entity__date');
-          const dateRange = dateRangeElement?.textContent?.replace(/\s*\n\s*/gm, '') || null;
-          
-          const startDate = dateRange?.split(/-|–/)?.[0]?.trim() || null;
-          const endDate = dateRange?.split(/-|–/)?.[1]?.trim() || null;
-
-          const endDateIsPresent = endDate?.toLowerCase() === "present" || false;
-
-          const descriptionElement = node.querySelector('.pv-accomplishment-entity__description');
-          const description = descriptionElement?.textContent || null;
-
-          data.push({
-            name: name,
-            position: position,
-            startDate: startDate,
-            endDate: endDate,
-            endDateIsPresent: endDateIsPresent,
-            description: description
-          });
-        }
-
-        return data
-      });
-
-      const organizationAccomplishments: OrganizationAccomplishments[] = rawOrganizationAccomplishments.map(rawOrganizationAccomplishment => {
-        const startDate = formatDate(getCleanText(rawOrganizationAccomplishment.startDate));
-        const endDate = formatDate(getCleanText(rawOrganizationAccomplishment.endDate));
-
-        return {
-          ...rawOrganizationAccomplishment,
-          name: getCleanText(rawOrganizationAccomplishment.name),
-          position: getCleanText(rawOrganizationAccomplishment.position),
-          description: getCleanText(rawOrganizationAccomplishment.description),
-          startDate: startDate,
-          endDate: endDate,
-          durationInDays: getDurationInDays(startDate, endDate)
-        }
-      })
-
-      statusLog(logSection, `Parsing language accomplishments data...`, scraperSessionId);
-
-      const langAccButton = 'button[aria-label="Expand languages section"][aria-expanded="false"]';
-      if (await page.$(langAccButton)) {
-        await page.click(langAccButton);
-        await page.waitFor(100);
-      }
-      
-      const rawLanguageAccomplishments: RawLanguageAccomplishments[] = await page.$$eval('.pv-profile-section.pv-accomplishments-block.languages ul > li.ember-view', (nodes) => {
-        const data: RawLanguageAccomplishments[] = [];
-        
-        for (const node of nodes) {
-          
-          const languageElement = node.querySelector('.pv-accomplishment-entity__title');
-          const language = languageElement?.textContent || null;
-
-          const proficiencyElement = node.querySelector('.pv-accomplishment-entity__proficiency');
-          const proficiency = proficiencyElement?.textContent || null;
-          
-          
-          data.push({
-            language: language,
-            proficiency: proficiency
-          })
-        }
-
-        return data;
-      });
-
-      const languageAccomplishments: LanguageAccomplishments[] = rawLanguageAccomplishments.map(languageAccomplishment => {
-        return {
-          ...languageAccomplishment,
-          language: getCleanText(languageAccomplishment.language),
-          proficiency: getCleanText(languageAccomplishment.proficiency)
-        }
-      })
-
-      statusLog(logSection, `Parsing project accomplishments data...`, scraperSessionId);
-
-      const projAccButton = 'button[aria-label="Expand projects section"][aria-expanded="false"]';
-      if (await page.$(projAccButton)) {
-        await page.click(projAccButton);
-        await page.waitFor(100);
-      }
-      
-      const rawProjectAccomplishments: RawProjectAccomplishments[] = await page.$$eval('.pv-profile-section.pv-accomplishments-block.projects ul > li.ember-view', (nodes) => {
-        const data: RawProjectAccomplishments[] = []
-
-        for (const node of nodes) {
-          const nameElement = node.querySelector('.pv-accomplishment-entity__title');
-          const name = nameElement?.textContent || null;
-
-          const descriptionElement = node.querySelector('.pv-accomplishment-entity__description');
-          const description = descriptionElement?.textContent || null;
-
-          data.push({
-            name: name,
-            description: description
-          })
-        }
-
-        return data;
-
-      });
-
-      const projectAccomplishments: ProjectAccomplishments[] = rawProjectAccomplishments.map(projectAccomplishment => {
-        return {
-          ...projectAccomplishment,
-          name: getCleanText(projectAccomplishment.name),
-          description: getCleanText(projectAccomplishment.description)
-        }
-      });
-
       statusLog(logSection, `Done! Returned profile details for: ${profileUrl}`, scraperSessionId)
 
       if (!this.options.keepAlive) {
@@ -1153,13 +745,6 @@ export class LinkedInProfileScraper {
       return {
         userProfile,
         experiences,
-        certifications,
-        education,
-        volunteerExperiences,
-        skills,
-        organizationAccomplishments,
-        languageAccomplishments,
-        projectAccomplishments
       }
     } catch (err) {
       // Kill Puppeteer
