@@ -147,13 +147,13 @@
         "affectsGlobalScope": false
       },
       "../src/blocked-hosts.ts": {
-        "version": "95fd2e0dc98af5a9101b8ed0794b6fc7a8a4a20e55b7d518d14ef860ceb72dc2",
-        "signature": "b949146912dd6d35b522daf9b011c15433d5c7616f9866b34a11f89a27bce6d8",
+        "version": "b6a2e5c004ad270ecddb81d7cb32bf5a2853260980da6dc82ce7ecc0688f760c",
+        "signature": "571261034908ba5d7a6d8c34c30c857a37aacf9f1cc6f4d0644a0d760bbc2ec9",
         "affectsGlobalScope": false
       },
       "../src/errors.ts": {
-        "version": "e35f18b90d504ebb2b03a1bc2b5c015baa66bcdc8f29b0b6243e27fb27bfe896",
-        "signature": "4745ef5a44003882e6ca2b30c838ce5b59dbf2c170e672b62e6fd088347b7057",
+        "version": "5483d1127d474e8303bb2db8e798ba7898c77e93acdd3995ea3cc2a174e66ee8",
+        "signature": "4ab8146102edc4d402bd6f292176eef3b07b9f13cfce755a5a79b9f4ab3dcd8b",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/globals.d.ts": {
@@ -411,12 +411,12 @@
         "signature": "d522314e80ed71b57e3c2939d3c9594eaae63a4adf028559e6574f6b270b0fee",
         "affectsGlobalScope": false
       },
-      "../node_modules/@types/puppeteer/Errors.d.ts": {
+      "../node_modules/@types/puppeteer/errors.d.ts": {
         "version": "24074eb89fe21d5d7d8a5ed86e6c56939cf32d533f68bae213b0cdac74e03d3b",
         "signature": "24074eb89fe21d5d7d8a5ed86e6c56939cf32d533f68bae213b0cdac74e03d3b",
         "affectsGlobalScope": false
       },
-      "../node_modules/@types/puppeteer/DeviceDescriptors.d.ts": {
+      "../node_modules/@types/puppeteer/devicedescriptors.d.ts": {
         "version": "c9c23a4476436315c1a675f807128457b5aeadc8d3d75340e1f4b93af73551ce",
         "signature": "c9c23a4476436315c1a675f807128457b5aeadc8d3d75340e1f4b93af73551ce",
         "affectsGlobalScope": false
@@ -447,23 +447,23 @@
         "affectsGlobalScope": false
       },
       "../src/utils/index.ts": {
-        "version": "f13355366526f537c4a469f13005a6f7ca28f4210029a9150f623d018160bcbd",
-        "signature": "766c9fe49658e552eb7a10f2be81b22a81280c00c3d8fadcd02c4a89f020bc1c",
+        "version": "0f2a5b8e22650c22398daf7c7eb0e91021369038d835f1061a0fe79bbdf6563d",
+        "signature": "ffbab9a9e38d299b82e4d78f4378aa4c7a1976d90cae8aff618c1d98bbf3c6b0",
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
-        "version": "5c4be50b183347d367561452918742313aeda2535da93352cdbbf023401c1606",
-        "signature": "bebf804e31e9a01350cdef83055818d517726f9ca9f6078860fb8b00d51e00e3",
+        "version": "8e07039a5532fe21791ad2822d88e77a955c18ac1aa2d8578748ba46c63bb86f",
+        "signature": "5bf23124e8b647eded902e39135339d0c9120f008d9ba9bbf586b1bda3b47238",
         "affectsGlobalScope": false
       },
       "../src/examples/list-of-urls.ts": {
-        "version": "df8183db58e63754b49b18196b22e021ec6e29cd87a9f275be389f368e36ab5e",
-        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "version": "855fdef7605b0107da953c33f00ddc6b2c7729361ff18b78b85400083a25deca",
+        "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
       "../src/examples/module.ts": {
-        "version": "b3387ad5b8526e73c70f2405085ea1fad7fece26aab29075960bc688b74e8c12",
-        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "version": "81d520a5908a72ee81307d202d868b6fb14e86a9289c0841f751cfb328069245",
+        "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/range-parser/index.d.ts": {
@@ -507,16 +507,16 @@
         "affectsGlobalScope": false
       },
       "../src/examples/server.ts": {
-        "version": "fdad01354830f715e7a9d4290e9eaff5b2a31038771378522671bc1a36d64619",
-        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "version": "d37559efd504044d192f5fddf6a6685c8e5a27c5454566d49165071ac3954f64",
+        "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
       "../src/typings/all-the-cities/index.d.ts": {
-        "version": "3e2d7a10ed06d95cdf502dbfee1d9e4b0372e8b3f17614c4d5a74f5a81b831ed",
-        "signature": "3e2d7a10ed06d95cdf502dbfee1d9e4b0372e8b3f17614c4d5a74f5a81b831ed",
+        "version": "caae77bcf703f284db3212f2fb744fb5a0c97f99602e5b60b100c2fd2d5fbe2e",
+        "signature": "caae77bcf703f284db3212f2fb744fb5a0c97f99602e5b60b100c2fd2d5fbe2e",
         "affectsGlobalScope": false
       },
-      "../node_modules/jest-diff/build/cleanupSemantic.d.ts": {
+      "../node_modules/jest-diff/build/cleanupsemantic.d.ts": {
         "version": "e222104af6cb9415238ad358488b74d76eceeff238c1268ec6e85655b05341da",
         "signature": "e222104af6cb9415238ad358488b74d76eceeff238c1268ec6e85655b05341da",
         "affectsGlobalScope": false
@@ -526,12 +526,12 @@
         "signature": "69da61a7b5093dac77fa3bec8be95dcf9a74c95a0e9161edb98bb24e30e439d2",
         "affectsGlobalScope": false
       },
-      "../node_modules/jest-diff/build/diffLines.d.ts": {
+      "../node_modules/jest-diff/build/difflines.d.ts": {
         "version": "eba230221317c985ab1953ccc3edc517f248b37db4fef7875cb2c8d08aff7be7",
         "signature": "eba230221317c985ab1953ccc3edc517f248b37db4fef7875cb2c8d08aff7be7",
         "affectsGlobalScope": false
       },
-      "../node_modules/jest-diff/build/printDiffs.d.ts": {
+      "../node_modules/jest-diff/build/printdiffs.d.ts": {
         "version": "b83e796810e475da3564c6515bc0ae9577070596a33d89299b7d99f94ecfd921",
         "signature": "b83e796810e475da3564c6515bc0ae9577070596a33d89299b7d99f94ecfd921",
         "affectsGlobalScope": false
@@ -563,7 +563,7 @@
       }
     },
     "options": {
-      "baseUrl": "../../../../../..",
+      "baseUrl": "/",
       "importHelpers": true,
       "allowJs": false,
       "allowSyntheticDefaultImports": true,
@@ -1074,13 +1074,13 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/@types/puppeteer/DeviceDescriptors.d.ts": [
+      "../node_modules/@types/puppeteer/devicedescriptors.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/@types/puppeteer/Errors.d.ts": [
+      "../node_modules/@types/puppeteer/errors.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
@@ -1094,8 +1094,8 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/ts3.7/index.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/puppeteer/DeviceDescriptors.d.ts",
-        "../node_modules/@types/puppeteer/Errors.d.ts"
+        "../node_modules/@types/puppeteer/devicedescriptors.d.ts",
+        "../node_modules/@types/puppeteer/errors.d.ts"
       ],
       "../node_modules/@types/qs/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
@@ -1123,18 +1123,18 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/jest-diff/build/cleanupSemantic.d.ts": [
+      "../node_modules/jest-diff/build/cleanupsemantic.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/jest-diff/build/diffLines.d.ts": [
+      "../node_modules/jest-diff/build/difflines.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/jest-diff/build/cleanupSemantic.d.ts",
+        "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
         "../node_modules/jest-diff/build/types.d.ts"
       ],
       "../node_modules/jest-diff/build/index.d.ts": [
@@ -1142,17 +1142,17 @@
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/jest-diff/build/cleanupSemantic.d.ts",
-        "../node_modules/jest-diff/build/diffLines.d.ts",
-        "../node_modules/jest-diff/build/printDiffs.d.ts",
+        "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
+        "../node_modules/jest-diff/build/difflines.d.ts",
+        "../node_modules/jest-diff/build/printdiffs.d.ts",
         "../node_modules/jest-diff/build/types.d.ts"
       ],
-      "../node_modules/jest-diff/build/printDiffs.d.ts": [
+      "../node_modules/jest-diff/build/printdiffs.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/jest-diff/build/cleanupSemantic.d.ts",
+        "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
         "../node_modules/jest-diff/build/types.d.ts"
       ],
       "../node_modules/jest-diff/build/types.d.ts": [
@@ -1894,13 +1894,13 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/@types/puppeteer/DeviceDescriptors.d.ts": [
+      "../node_modules/@types/puppeteer/devicedescriptors.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/@types/puppeteer/Errors.d.ts": [
+      "../node_modules/@types/puppeteer/errors.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
@@ -1914,8 +1914,8 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/ts3.7/index.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/puppeteer/DeviceDescriptors.d.ts",
-        "../node_modules/@types/puppeteer/Errors.d.ts"
+        "../node_modules/@types/puppeteer/devicedescriptors.d.ts",
+        "../node_modules/@types/puppeteer/errors.d.ts"
       ],
       "../node_modules/@types/qs/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
@@ -1943,18 +1943,18 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/jest-diff/build/cleanupSemantic.d.ts": [
+      "../node_modules/jest-diff/build/cleanupsemantic.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/jest-diff/build/diffLines.d.ts": [
+      "../node_modules/jest-diff/build/difflines.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/jest-diff/build/cleanupSemantic.d.ts",
+        "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
         "../node_modules/jest-diff/build/types.d.ts"
       ],
       "../node_modules/jest-diff/build/index.d.ts": [
@@ -1962,17 +1962,17 @@
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/jest-diff/build/cleanupSemantic.d.ts",
-        "../node_modules/jest-diff/build/diffLines.d.ts",
-        "../node_modules/jest-diff/build/printDiffs.d.ts",
+        "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
+        "../node_modules/jest-diff/build/difflines.d.ts",
+        "../node_modules/jest-diff/build/printdiffs.d.ts",
         "../node_modules/jest-diff/build/types.d.ts"
       ],
-      "../node_modules/jest-diff/build/printDiffs.d.ts": [
+      "../node_modules/jest-diff/build/printdiffs.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/jest-diff/build/cleanupSemantic.d.ts",
+        "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
         "../node_modules/jest-diff/build/types.d.ts"
       ],
       "../node_modules/jest-diff/build/types.d.ts": [
@@ -2261,17 +2261,17 @@
       "../node_modules/@types/node/vm.d.ts",
       "../node_modules/@types/node/worker_threads.d.ts",
       "../node_modules/@types/node/zlib.d.ts",
-      "../node_modules/@types/puppeteer/DeviceDescriptors.d.ts",
-      "../node_modules/@types/puppeteer/Errors.d.ts",
+      "../node_modules/@types/puppeteer/devicedescriptors.d.ts",
+      "../node_modules/@types/puppeteer/errors.d.ts",
       "../node_modules/@types/puppeteer/index.d.ts",
       "../node_modules/@types/qs/index.d.ts",
       "../node_modules/@types/range-parser/index.d.ts",
       "../node_modules/@types/serve-static/index.d.ts",
       "../node_modules/i18n-iso-countries/index.d.ts",
-      "../node_modules/jest-diff/build/cleanupSemantic.d.ts",
-      "../node_modules/jest-diff/build/diffLines.d.ts",
+      "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
+      "../node_modules/jest-diff/build/difflines.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
-      "../node_modules/jest-diff/build/printDiffs.d.ts",
+      "../node_modules/jest-diff/build/printdiffs.d.ts",
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/moment-timezone/index.d.ts",
       "../node_modules/moment/ts3.1-typings/moment.d.ts",
