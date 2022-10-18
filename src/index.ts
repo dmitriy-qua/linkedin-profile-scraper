@@ -1,10 +1,10 @@
-import puppeteer, { Page, Browser } from 'puppeteer'
+import puppeteer, {Page, Browser} from 'puppeteer'
 import treeKill from 'tree-kill';
 
 import blockedHostsList from './blocked-hosts';
 
-import { getDurationInDays, formatDate, getCleanText, getLocationFromText, statusLog, getHostname } from './utils'
-import { SessionExpired } from './errors';
+import {getDurationInDays, formatDate, getCleanText, getLocationFromText, statusLog, getHostname} from './utils'
+import {SessionExpired} from './errors';
 
 export interface Location {
   city: string | null;
@@ -33,6 +33,8 @@ export interface Profile {
 interface RawExperience {
   title: string | null;
   company: string | null;
+  companyLogo: string | null;
+  companyUrl: string | null;
   employmentType: string | null;
   location: string | null;
   startDate: string | null;
@@ -44,6 +46,8 @@ interface RawExperience {
 export interface Experience {
   title: string | null;
   company: string | null;
+  companyLogo: string | null;
+  companyUrl: string | null;
   employmentType: string | null;
   location: Location | null;
   startDate: string | null;
@@ -57,38 +61,38 @@ interface ScraperUserDefinedOptions {
   /**
    * The LinkedIn `li_at` session cookie value. Get this value by logging in to LinkedIn with the account you want to use for scraping.
    * Open your browser's Dev Tools and find the cookie with the name `li_at`. Use that value here.
-   * 
-   * This script uses a known session cookie of a successful login into LinkedIn, instead of an e-mail and password to set you logged in. 
+   *
+   * This script uses a known session cookie of a successful login into LinkedIn, instead of an e-mail and password to set you logged in.
    * I did this because LinkedIn has security measures by blocking login requests from unknown locations or requiring you to fill in Captcha's upon login.
-   * So, if you run this from a server and try to login with an e-mail address and password, your login could be blocked. 
+   * So, if you run this from a server and try to login with an e-mail address and password, your login could be blocked.
    * By using a known session, we prevent this from happening and allows you to use this scraper on any server on any location.
-   * 
+   *
    * You probably need to get a new session cookie value when the scraper logs show it's not logged in anymore.
    */
   sessionCookieValue: string;
   /**
    * Set to true if you want to keep the scraper session alive. This results in faster recurring scrapes.
    * But keeps your memory usage high.
-   * 
+   *
    * Default: `false`
    */
   keepAlive?: boolean;
   /**
    * Set a custom user agent if you like.
-   * 
+   *
    * Default: `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36`
    */
   userAgent?: string;
   /**
-   * Use a custom timeout to set the maximum time you want to wait for the scraper 
+   * Use a custom timeout to set the maximum time you want to wait for the scraper
    * to do his job.
-   * 
+   *
    * Default: `10000` (10 seconds)
    */
   timeout?: number;
   /**
    * Start the scraper in headless mode, or not.
-   * 
+   *
    * Default: `true`
    */
   headless?: boolean;
@@ -132,7 +136,7 @@ export class LinkedInProfileScraper {
 
   private browser: Browser | null = null;
   private launched: boolean = false;
-  
+
   constructor(userDefinedOptions: ScraperUserDefinedOptions) {
     const logSection = 'constructing';
     const errorPrefix = 'Error during setup.';
@@ -140,11 +144,11 @@ export class LinkedInProfileScraper {
     if (!userDefinedOptions.sessionCookieValue) {
       throw new Error(`${errorPrefix} Option "sessionCookieValue" is required.`);
     }
-    
+
     if (userDefinedOptions.sessionCookieValue && typeof userDefinedOptions.sessionCookieValue !== 'string') {
       throw new Error(`${errorPrefix} Option "sessionCookieValue" needs to be a string.`);
     }
-    
+
     if (userDefinedOptions.userAgent && typeof userDefinedOptions.userAgent !== 'string') {
       throw new Error(`${errorPrefix} Option "userAgent" needs to be a string.`);
     }
@@ -152,11 +156,11 @@ export class LinkedInProfileScraper {
     if (userDefinedOptions.keepAlive !== undefined && typeof userDefinedOptions.keepAlive !== 'boolean') {
       throw new Error(`${errorPrefix} Option "keepAlive" needs to be a boolean.`);
     }
-   
+
     if (userDefinedOptions.timeout !== undefined && typeof userDefinedOptions.timeout !== 'number') {
       throw new Error(`${errorPrefix} Option "timeout" needs to be a number.`);
     }
-    
+
     if (userDefinedOptions.headless !== undefined && typeof userDefinedOptions.headless !== 'boolean') {
       throw new Error(`${errorPrefix} Option "headless" needs to be a boolean.`);
     }
@@ -341,7 +345,7 @@ export class LinkedInProfileScraper {
   /**
    * Method to block know hosts that have some kind of tracking.
    * By blocking those hosts we speed up the crawling.
-   * 
+   *
    * More info: http://winhelp2002.mvps.org/hosts.htm
    */
   private getBlockedHosts = (): object => {
@@ -490,7 +494,7 @@ export class LinkedInProfileScraper {
       await page.goto(profileUrl, {
         // Use "networkidl2" here and not "domcontentloaded". 
         // As with "domcontentloaded" some elements might not be loaded correctly, resulting in missing data.
-        waitUntil: 'networkidle2',
+        waitUntil: 'load',
         timeout: this.options.timeout
       });
 
@@ -543,7 +547,7 @@ export class LinkedInProfileScraper {
           statusLog(logSection, `Could not find or click expand button selector "${buttonSelector}". So we skip that one.`, scraperSessionId)
         }
       }
-      
+
 
       // To give a little room to let data appear. Setting this to 0 might result in "Node is detached from document" errors
       await page.waitFor(200);
@@ -615,77 +619,84 @@ export class LinkedInProfileScraper {
 
       statusLog(logSection, `Parsing experiences data...`, scraperSessionId)
 
-      const rawExperiencesData: RawExperience[] = await page.$$eval(".pvs-list__outer-container.ul.pvs-list.ph5.display-flex.flex-row.flex-wrap", (nodes) => {
+      let experienceIndex = await page.$$eval("main section.artdeco-card", (nodes) => {
+        let i = 1;
+        let experienceIndex = 0;
 
-        let data: RawExperience[] = []
-        let currentCompanySummary: object = {};
-
-        // Using a for loop so we can use await inside of it
         for (const node of nodes) {
-
-          let title, employmentType, company, description, startDate, endDate, dateRangeText, endDateIsPresent, location;
-          if (node.querySelector('.pv-entity__company-summary-info') != null) {
-            const companyElement = node.querySelector('.pv-entity__company-summary-info span:nth-child(2)');
-            currentCompanySummary['company_name'] = companyElement?.textContent || null;
-
-            const descriptionElement = node.querySelector('.pv-entity__description');
-            currentCompanySummary[''] = descriptionElement?.textContent || null
-
-            continue;
+          if (!!node.querySelector(`[id="experience"]`)) {
+            experienceIndex = i
           }
-          if (node.querySelector('[data-control-name="background_details_company"]') != null) {
-            currentCompanySummary = {};
-          }
-          if (Object.keys(currentCompanySummary).length !== 0) {
-            const titleElement = node.querySelector('h3 span:nth-child(2)');
-            title = titleElement?.textContent || null;
-
-            const employmentTypeElement = node.querySelector('h4');
-            employmentType = employmentTypeElement?.textContent || null
-
-            company = currentCompanySummary['company_name'];
-          } else {
-            const titleElement = node.querySelector('h3');
-            title = titleElement?.textContent || null
-
-            const employmentTypeElement = node.querySelector('span.pv-entity__secondary-title');
-            employmentType = employmentTypeElement?.textContent || null
-
-            const companyElement = node.querySelector('.pv-entity__secondary-title');
-            const companyElementClean = companyElement && companyElement?.querySelector('span') ? companyElement?.removeChild(companyElement.querySelector('span') as Node) && companyElement : companyElement || null;
-            company = companyElementClean?.textContent || null
-          }
-
-          const descriptionElement = node.querySelector('.pv-entity__description');
-          description = descriptionElement?.textContent || null
-
-          const dateRangeElement = node.querySelector('.pv-entity__date-range span:nth-child(2)');
-          dateRangeText = dateRangeElement?.textContent || null
-
-          const startDatePart = dateRangeText?.split('–')[0] || null;
-          startDate = startDatePart?.trim() || null;
-
-          const endDatePart = dateRangeText?.split('–')[1] || null;
-          endDateIsPresent = endDatePart?.trim().toLowerCase() === 'present' || false;
-          endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
-
-          const locationElement = node.querySelector('.pv-entity__location span:nth-child(2)');
-          location = locationElement?.textContent || null;
-
-          data.push({
-            title,
-            company,
-            employmentType,
-            location,
-            startDate,
-            endDate,
-            endDateIsPresent,
-            description
-          })
+          i++
         }
 
-        return data;
+        return experienceIndex;
       });
+
+      let rawExperiencesData: RawExperience[] = []
+
+      if (experienceIndex) {
+        rawExperiencesData = await page.$$eval(`main > section.artdeco-card:nth-child(${experienceIndex}) > div.pvs-list__outer-container > ul.pvs-list > li.artdeco-list__item`, (nodes) => {
+
+          let data: RawExperience[] = []
+
+          // Using a for loop so we can use await inside of it
+          for (const node of nodes) {
+
+            let title, employmentType, company, companyLogo, companyUrl, description, startDate, endDate, dateRangeText, endDateIsPresent,
+              location;
+
+            const titleElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > div > span > span.visually-hidden');
+            title = titleElement?.textContent || null
+
+            const employmentTypeElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(2) > span.visually-hidden');
+            employmentType = employmentTypeElement?.textContent || null
+
+            const companyElement = employmentTypeElement?.textContent || "";
+            let companyData = companyElement?.split("·")[0].trim() || "";
+            company = companyData.trim() || null;
+
+
+            const companyLogoElement = node.querySelector('div > a > div.ivm-image-view-model.pvs-entity__image > div.ivm-view-attr__img-wrapper.ivm-view-attr__img-wrapper--use-img-tag.display-flex > img')
+            companyLogo = companyLogoElement?.getAttribute('src') || null
+
+            const companyUrlElement = node.querySelector('div > a')
+            companyUrl = companyUrlElement?.getAttribute('href') || null
+
+
+            const descriptionElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.pvs-list__outer-container > ul > li > div > ul > li > div > div > div > div > span.visually-hidden');
+            description = descriptionElement?.textContent || null
+
+            const dateRangeElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(3) > span.visually-hidden');
+            dateRangeText = dateRangeElement?.textContent || null
+
+            const startDatePart = dateRangeText?.split('–')[0] || null;
+            startDate = startDatePart?.trim() || null;
+
+            const endDatePart = dateRangeText?.split('–')[1] || null;
+            endDateIsPresent = endDatePart?.trim().toLowerCase() === 'present' || false;
+            endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
+
+            const locationElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(4) > span.visually-hidden');
+            location = locationElement?.textContent || null;
+
+            data.push({
+              title,
+              company,
+              companyLogo,
+              companyUrl,
+              employmentType,
+              location,
+              startDate,
+              endDate,
+              endDateIsPresent,
+              description
+            })
+          }
+
+          return data;
+        });
+      }
 
       // Convert the raw data to clean data using our utils
       // So we don't have to inject our util methods inside the browser context, which is too damn difficult using TypeScript

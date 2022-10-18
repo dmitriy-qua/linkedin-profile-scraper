@@ -10,8 +10,9 @@ const app = express();
   const scraper = new LinkedInProfileScraper({
     sessionCookieValue: `${process.env.LINKEDIN_SESSION_COOKIE_VALUE}`,
     keepAlive: true,
+    //headless: false,
+    timeout: 20000
   })
-
 
   // Prepare the scraper
   // Loading it in memory
