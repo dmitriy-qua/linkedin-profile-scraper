@@ -12,7 +12,7 @@ function autoScroll(page) {
         yield page.evaluate(() => {
             return new Promise((resolve, reject) => {
                 var totalHeight = 0;
-                var distance = 500;
+                var distance = 200;
                 var timer = setInterval(() => {
                     var scrollHeight = document.body.scrollHeight;
                     window.scrollBy(0, distance);
@@ -170,7 +170,7 @@ class LinkedInProfileScraper {
                 }
                 return prev;
             }, {});
-            blockedHostsObject = Object.assign(Object.assign({}, blockedHostsObject), { 'static.chartbeat.com': true, 'scdn.cxense.com': true, 'api.cxense.com': true, 'www.googletagmanager.com': true, 'connect.facebook.net': true, 'platform.twitter.com': true, 'tags.tiqcdn.com': true, 'dev.visualwebsiteoptimizer.com': true, 'smartlock.google.com': true, 'cdn.embedly.com': true, 'www.pagespeed-mod.com': true, 'ssl.google-analytics.com': true, 'radar.cedexis.com': true, 'sb.scorecardresearch.com': true });
+            blockedHostsObject = {};
             return blockedHostsObject;
         };
         this.close = (page) => {
@@ -247,66 +247,20 @@ class LinkedInProfileScraper {
                 const page = yield this.createPage();
                 utils_1.statusLog(logSection, `Navigating to LinkedIn profile: ${profileUrl}`, scraperSessionId);
                 yield page.goto(profileUrl, {
-                    waitUntil: 'load',
+                    waitUntil: 'domcontentloaded',
                     timeout: this.options.timeout
                 });
+                yield page.waitFor(3000);
+                page.on('console', (msg) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                    const msgArgs = msg.args();
+                    for (let i = 0; i < msgArgs.length; ++i) {
+                        console.log(yield msgArgs[i].jsonValue());
+                    }
+                }));
                 utils_1.statusLog(logSection, 'LinkedIn profile page loaded!', scraperSessionId);
                 utils_1.statusLog(logSection, 'Getting all the LinkedIn profile data by scrolling the page to the bottom, so all the data gets loaded into the page...', scraperSessionId);
                 yield autoScroll(page);
                 utils_1.statusLog(logSection, 'Parsing data...', scraperSessionId);
-                const expandButtonsSelectors = [
-                    '.pv-profile-section.pv-about-section .lt-line-clamp__more',
-                    '#experience-section .inline-show-more-text__button.link',
-                    '#experience-section [aria-expanded="false"]',
-                    '#certifications-section [aria-expanded="false"]',
-                    '.pv-profile-section.education-section button.pv-profile-section__see-more-inline',
-                    '[aria-controls="skill-categories-expanded"]'
-                ];
-                const seeMoreButtonsSelectors = [
-                    '.pv-entity__description .lt-line-clamp__line.lt-line-clamp__line--last .lt-line-clamp__more[href="#"]',
-                    '.pv-profile-section__see-more-inline',
-                    '.inline-show-more-text__button',
-                    '.pv-profile-section__see-more-inline.pv-profile-section__text-truncate-toggle.artdeco-button.artdeco-button--tertiary.artdeco-button--muted',
-                    '.pv-entity__paging button.pv-profile-section__see-more-inline',
-                    '#experience-section [aria-expanded="false"]'
-                ];
-                utils_1.statusLog(logSection, 'Expanding all sections by clicking their "See more" buttons', scraperSessionId);
-                for (const buttonSelector of expandButtonsSelectors) {
-                    try {
-                        if ((yield page.$(buttonSelector)) != null) {
-                            utils_1.statusLog(logSection, `Clicking button ${buttonSelector}`, scraperSessionId);
-                            yield page.click(buttonSelector);
-                            yield page.waitFor(100);
-                            if (buttonSelector.startsWith('#certifications-section')) {
-                                while ((yield page.$(buttonSelector)) != null) {
-                                    yield page.click(buttonSelector);
-                                    yield page.waitFor(100);
-                                }
-                            }
-                        }
-                    }
-                    catch (err) {
-                        utils_1.statusLog(logSection, `Could not find or click expand button selector "${buttonSelector}". So we skip that one.`, scraperSessionId);
-                    }
-                }
-                yield page.waitFor(200);
-                utils_1.statusLog(logSection, 'Expanding all descriptions by clicking their "See more" buttons', scraperSessionId);
-                for (const seeMoreButtonSelector of seeMoreButtonsSelectors) {
-                    const buttons = yield page.$$(seeMoreButtonSelector);
-                    for (const button of buttons) {
-                        if (button) {
-                            try {
-                                utils_1.statusLog(logSection, `Clicking button ${seeMoreButtonSelector}`, scraperSessionId);
-                                yield button.click();
-                                yield page.waitFor(100);
-                            }
-                            catch (err) {
-                                utils_1.statusLog(logSection, `Could not find or click see more button selector "${button}". So we skip that one.`, scraperSessionId);
-                            }
-                        }
-                    }
-                }
-                yield page.waitFor(200);
                 utils_1.statusLog(logSection, 'Parsing profile data...', scraperSessionId);
                 const rawUserProfileData = yield page.evaluate(() => {
                     const profileSection = document.querySelector('.pv-top-card');
@@ -333,30 +287,38 @@ class LinkedInProfileScraper {
                 const userProfile = Object.assign(Object.assign({}, rawUserProfileData), { fullName: utils_1.getCleanText(rawUserProfileData.fullName), title: utils_1.getCleanText(rawUserProfileData.title), location: rawUserProfileData.location ? utils_1.getLocationFromText(rawUserProfileData.location) : null, description: utils_1.getCleanText(rawUserProfileData.description) });
                 utils_1.statusLog(logSection, `Got user profile data: ${JSON.stringify(userProfile)}`, scraperSessionId);
                 utils_1.statusLog(logSection, `Parsing experiences data...`, scraperSessionId);
-                let experienceIndex = yield page.$$eval("main section.artdeco-card", (nodes) => {
-                    let i = 1;
+                let experienceIndex = yield page.$$eval("main > section.artdeco-card.ember-view", (nodes) => {
+                    var _a, _b;
+                    let i = 0;
                     let experienceIndex = 0;
+                    let undefinedCount = 0;
                     for (const node of nodes) {
-                        if (!!node.querySelector(`[id="experience"]`)) {
+                        const headerTitle = (_a = node.querySelector(`.pvs-header__container > div > div > div > h2 > span`)) === null || _a === void 0 ? void 0 : _a.textContent;
+                        if (headerTitle === undefined) {
+                            undefinedCount += 1;
+                        }
+                        if (((_b = node.querySelector(`.pvs-header__container > div > div > div > h2 > span`)) === null || _b === void 0 ? void 0 : _b.textContent) === "Experience") {
                             experienceIndex = i;
                         }
                         i++;
                     }
-                    return experienceIndex;
+                    return experienceIndex + undefinedCount;
                 });
                 let rawExperiencesData = [];
                 if (experienceIndex) {
-                    rawExperiencesData = yield page.$$eval(`main > section.artdeco-card:nth-child(${experienceIndex}) > div.pvs-list__outer-container > ul.pvs-list > li.artdeco-list__item`, (nodes) => {
+                    rawExperiencesData = yield page.$$eval(`main > section.artdeco-card.ember-view:nth-child(${experienceIndex}) > div.pvs-list__outer-container > ul.pvs-list > li.artdeco-list__item`, (nodes) => {
+                        var _a, _b, _c, _d, _e;
                         let data = [];
                         for (const node of nodes) {
                             let title, employmentType, company, companyLogo, companyUrl, description, startDate, endDate, dateRangeText, endDateIsPresent, location;
-                            const titleElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > div > span > span.visually-hidden');
+                            const titleElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div > div > span > span.visually-hidden');
+                            console.log(titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent);
                             title = (titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent) || null;
-                            const employmentTypeElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(2) > span.visually-hidden');
+                            const employmentTypeElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div.display-flex.flex-column > span:nth-child(2) > span.visually-hidden');
                             employmentType = (employmentTypeElement === null || employmentTypeElement === void 0 ? void 0 : employmentTypeElement.textContent) || null;
                             const companyElement = (employmentTypeElement === null || employmentTypeElement === void 0 ? void 0 : employmentTypeElement.textContent) || "";
-                            let companyData = (companyElement === null || companyElement === void 0 ? void 0 : companyElement.split("·")[0].trim()) || "";
-                            company = companyData.trim() || null;
+                            let companyData = ((_b = (_a = companyElement === null || companyElement === void 0 ? void 0 : companyElement.split("·")) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.trim()) || "";
+                            company = (companyData === null || companyData === void 0 ? void 0 : companyData.trim()) || null;
                             const companyLogoElement = node.querySelector('div > a > div.ivm-image-view-model.pvs-entity__image > div.ivm-view-attr__img-wrapper.ivm-view-attr__img-wrapper--use-img-tag.display-flex > img');
                             companyLogo = (companyLogoElement === null || companyLogoElement === void 0 ? void 0 : companyLogoElement.getAttribute('src')) || null;
                             const companyUrlElement = node.querySelector('div > a');
@@ -365,11 +327,11 @@ class LinkedInProfileScraper {
                             description = (descriptionElement === null || descriptionElement === void 0 ? void 0 : descriptionElement.textContent) || null;
                             const dateRangeElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(3) > span.visually-hidden');
                             dateRangeText = (dateRangeElement === null || dateRangeElement === void 0 ? void 0 : dateRangeElement.textContent) || null;
-                            const startDatePart = (dateRangeText === null || dateRangeText === void 0 ? void 0 : dateRangeText.split('–')[0]) || null;
+                            const startDatePart = ((_c = dateRangeText === null || dateRangeText === void 0 ? void 0 : dateRangeText.split('–')) === null || _c === void 0 ? void 0 : _c[0]) || null;
                             startDate = (startDatePart === null || startDatePart === void 0 ? void 0 : startDatePart.trim()) || null;
-                            const endDatePart = (dateRangeText === null || dateRangeText === void 0 ? void 0 : dateRangeText.split('–')[1]) || null;
-                            endDateIsPresent = (endDatePart === null || endDatePart === void 0 ? void 0 : endDatePart.trim().toLowerCase()) === 'present' || false;
-                            endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
+                            const endDatePart = ((_d = dateRangeText === null || dateRangeText === void 0 ? void 0 : dateRangeText.split('–')) === null || _d === void 0 ? void 0 : _d[1]) || null;
+                            endDateIsPresent = ((_e = endDatePart === null || endDatePart === void 0 ? void 0 : endDatePart.trim()) === null || _e === void 0 ? void 0 : _e.toLowerCase()) === 'present' || false;
+                            endDate = (endDatePart && !endDateIsPresent) ? endDatePart === null || endDatePart === void 0 ? void 0 : endDatePart.trim() : 'Present';
                             const locationElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(4) > span.visually-hidden');
                             location = (locationElement === null || locationElement === void 0 ? void 0 : locationElement.textContent) || null;
                             data.push({

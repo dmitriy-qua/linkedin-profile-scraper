@@ -9,7 +9,7 @@ const app = express_1.default();
     const scraper = new index_1.LinkedInProfileScraper({
         sessionCookieValue: `${process.env.LINKEDIN_SESSION_COOKIE_VALUE}`,
         keepAlive: true,
-        timeout: 20000
+        timeout: 30000
     });
     yield scraper.setup();
     app.get('/', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
