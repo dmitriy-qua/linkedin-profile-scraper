@@ -110,7 +110,7 @@ async function autoScroll(page: Page) {
   await page.evaluate(() => {
     return new Promise((resolve, reject) => {
       var totalHeight = 0;
-      var distance = 500;
+      var distance = 200;
       var timer = setInterval(() => {
         var scrollHeight = document.body.scrollHeight;
         window.scrollBy(0, distance);
@@ -362,21 +362,21 @@ export class LinkedInProfileScraper {
     }, {});
 
     blockedHostsObject = {
-      ...blockedHostsObject,
-      'static.chartbeat.com': true,
-      'scdn.cxense.com': true,
-      'api.cxense.com': true,
-      'www.googletagmanager.com': true,
-      'connect.facebook.net': true,
-      'platform.twitter.com': true,
-      'tags.tiqcdn.com': true,
-      'dev.visualwebsiteoptimizer.com': true,
-      'smartlock.google.com': true,
-      'cdn.embedly.com': true,
-      'www.pagespeed-mod.com': true,
-      'ssl.google-analytics.com': true,
-      'radar.cedexis.com': true,
-      'sb.scorecardresearch.com': true
+      // ...blockedHostsObject,
+      // 'static.chartbeat.com': true,
+      // 'scdn.cxense.com': true,
+      // 'api.cxense.com': true,
+      // 'www.googletagmanager.com': true,
+      // 'connect.facebook.net': true,
+      // 'platform.twitter.com': true,
+      // 'tags.tiqcdn.com': true,
+      // 'dev.visualwebsiteoptimizer.com': true,
+      // 'smartlock.google.com': true,
+      // 'cdn.embedly.com': true,
+      // 'www.pagespeed-mod.com': true,
+      // 'ssl.google-analytics.com': true,
+      // 'radar.cedexis.com': true,
+      // 'sb.scorecardresearch.com': true
     }
 
     return blockedHostsObject;
@@ -492,10 +492,19 @@ export class LinkedInProfileScraper {
       statusLog(logSection, `Navigating to LinkedIn profile: ${profileUrl}`, scraperSessionId)
 
       await page.goto(profileUrl, {
-        // Use "networkidl2" here and not "domcontentloaded". 
+        // Use "networkidle2" here and not "domcontentloaded".
         // As with "domcontentloaded" some elements might not be loaded correctly, resulting in missing data.
-        waitUntil: 'load',
+        waitUntil: 'domcontentloaded',
         timeout: this.options.timeout
+      });
+
+      await page.waitFor(3000)
+
+      page.on('console', async (msg) => {
+        const msgArgs = msg.args();
+        for (let i = 0; i < msgArgs.length; ++i) {
+          console.log(await msgArgs[i].jsonValue());
+        }
       });
 
       statusLog(logSection, 'LinkedIn profile page loaded!', scraperSessionId)
@@ -507,70 +516,68 @@ export class LinkedInProfileScraper {
       statusLog(logSection, 'Parsing data...', scraperSessionId)
 
       // Only click the expanding buttons when they exist
-      const expandButtonsSelectors = [
-        '.pv-profile-section.pv-about-section .lt-line-clamp__more', // About
-        '#experience-section .inline-show-more-text__button.link', // Experience
-        '#experience-section [aria-expanded="false"]',
-        '#certifications-section [aria-expanded="false"]', // Certifications,
-        '.pv-profile-section.education-section button.pv-profile-section__see-more-inline', // Education
-        // '.pv-profile-section__card-action-bar.pv-skills-section__additional-skills.artdeco-container-card-action-bar.artdeco-button.artdeco-button--tertiary.artdeco-button--3.artdeco-button--fluid.artdeco-button--muted', // Skills,
-        '[aria-controls="skill-categories-expanded"]' // Skills, shorter query
-      ];
-
-      const seeMoreButtonsSelectors = [
-        '.pv-entity__description .lt-line-clamp__line.lt-line-clamp__line--last .lt-line-clamp__more[href="#"]',
-        '.pv-profile-section__see-more-inline',
-        '.inline-show-more-text__button',
-        '.pv-profile-section__see-more-inline.pv-profile-section__text-truncate-toggle.artdeco-button.artdeco-button--tertiary.artdeco-button--muted',
-        '.pv-entity__paging button.pv-profile-section__see-more-inline',
-        '#experience-section [aria-expanded="false"]'
-      ]
-
-      statusLog(logSection, 'Expanding all sections by clicking their "See more" buttons', scraperSessionId)
-
-      for (const buttonSelector of expandButtonsSelectors) {
-        try {
-          if (await page.$(buttonSelector) != null) {
-            statusLog(logSection, `Clicking button ${buttonSelector}`, scraperSessionId)
-            await page.click(buttonSelector);
-            await page.waitFor(100);
-
-            // since certifications sort of paginate expands
-            if (buttonSelector.startsWith('#certifications-section')) {
-              while (await page.$(buttonSelector) != null) {
-                await page.click(buttonSelector);
-                await page.waitFor(100);
-              }
-            }
-          }
-        } catch (err) {
-          statusLog(logSection, `Could not find or click expand button selector "${buttonSelector}". So we skip that one.`, scraperSessionId)
-        }
-      }
-
-
-      // To give a little room to let data appear. Setting this to 0 might result in "Node is detached from document" errors
-      await page.waitFor(200);
-
-      statusLog(logSection, 'Expanding all descriptions by clicking their "See more" buttons', scraperSessionId)
-
-      for (const seeMoreButtonSelector of seeMoreButtonsSelectors) {
-        const buttons = await page.$$(seeMoreButtonSelector)
-
-        for (const button of buttons) {
-          if (button) {
-            try {
-              statusLog(logSection, `Clicking button ${seeMoreButtonSelector}`, scraperSessionId)
-              await button.click()
-              await page.waitFor(100);
-            } catch (err) {
-              statusLog(logSection, `Could not find or click see more button selector "${button}". So we skip that one.`, scraperSessionId)
-            }
-          }
-        }
-      }
-
-      await page.waitFor(200);
+      // const expandButtonsSelectors = [
+      //   '.pv-profile-section.pv-about-section .lt-line-clamp__more', // About
+      //   '#experience-section .inline-show-more-text__button.link', // Experience
+      //   '#experience-section [aria-expanded="false"]',
+      //   '#certifications-section [aria-expanded="false"]', // Certifications,
+      //   '.pv-profile-section.education-section button.pv-profile-section__see-more-inline', // Education
+      //   // '.pv-profile-section__card-action-bar.pv-skills-section__additional-skills.artdeco-container-card-action-bar.artdeco-button.artdeco-button--tertiary.artdeco-button--3.artdeco-button--fluid.artdeco-button--muted', // Skills,
+      //   '[aria-controls="skill-categories-expanded"]' // Skills, shorter query
+      // ];
+      //
+      // const seeMoreButtonsSelectors = [
+      //   '.pv-entity__description .lt-line-clamp__line.lt-line-clamp__line--last .lt-line-clamp__more[href="#"]',
+      //   '.pv-profile-section__see-more-inline',
+      //   '.inline-show-more-text__button',
+      //   '.pv-profile-section__see-more-inline.pv-profile-section__text-truncate-toggle.artdeco-button.artdeco-button--tertiary.artdeco-button--muted',
+      //   '.pv-entity__paging button.pv-profile-section__see-more-inline',
+      //   '#experience-section [aria-expanded="false"]'
+      // ]
+      //
+      // statusLog(logSection, 'Expanding all sections by clicking their "See more" buttons', scraperSessionId)
+      //
+      // for (const buttonSelector of expandButtonsSelectors) {
+      //   try {
+      //     if (await page.$(buttonSelector) != null) {
+      //       statusLog(logSection, `Clicking button ${buttonSelector}`, scraperSessionId)
+      //       await page.click(buttonSelector);
+      //       await page.waitFor(1000);
+      //
+      //       // since certifications sort of paginate expands
+      //       if (buttonSelector.startsWith('#certifications-section')) {
+      //         while (await page.$(buttonSelector) != null) {
+      //           await page.click(buttonSelector);
+      //           await page.waitFor(1000);
+      //         }
+      //       }
+      //     }
+      //   } catch (err) {
+      //     statusLog(logSection, `Could not find or click expand button selector "${buttonSelector}". So we skip that one.`, scraperSessionId)
+      //   }
+      // }
+      //
+      //
+      // // To give a little room to let data appear. Setting this to 0 might result in "Node is detached from document" errors
+      // await page.waitFor(2000);
+      //
+      // statusLog(logSection, 'Expanding all descriptions by clicking their "See more" buttons', scraperSessionId)
+      //
+      // for (const seeMoreButtonSelector of seeMoreButtonsSelectors) {
+      //   const buttons = await page.$$(seeMoreButtonSelector)
+      //
+      //   for (const button of buttons) {
+      //     if (button) {
+      //       try {
+      //         statusLog(logSection, `Clicking button ${seeMoreButtonSelector}`, scraperSessionId)
+      //         await button.click()
+      //         await page.waitFor(1000);
+      //       } catch (err) {
+      //         statusLog(logSection, `Could not find or click see more button selector "${button}". So we skip that one.`, scraperSessionId)
+      //       }
+      //     }
+      //   }
+      // }
 
       statusLog(logSection, 'Parsing profile data...', scraperSessionId)
 
@@ -619,42 +626,52 @@ export class LinkedInProfileScraper {
 
       statusLog(logSection, `Parsing experiences data...`, scraperSessionId)
 
-      let experienceIndex = await page.$$eval("main section.artdeco-card", (nodes) => {
-        let i = 1;
+      let experienceIndex = await page.$$eval("main > section.artdeco-card.ember-view", (nodes) => {
+        let i = 0;
         let experienceIndex = 0;
+        let undefinedCount = 0;
 
         for (const node of nodes) {
-          if (!!node.querySelector(`[id="experience"]`)) {
+          const headerTitle = node.querySelector(`.pvs-header__container > div > div > div > h2 > span`)?.textContent
+
+          if (headerTitle === undefined) {
+            undefinedCount += 1
+          }
+
+          if (node.querySelector(`.pvs-header__container > div > div > div > h2 > span`)?.textContent === "Experience") {
             experienceIndex = i
           }
+
           i++
         }
 
-        return experienceIndex;
+        return experienceIndex + undefinedCount;
       });
 
       let rawExperiencesData: RawExperience[] = []
 
       if (experienceIndex) {
-        rawExperiencesData = await page.$$eval(`main > section.artdeco-card:nth-child(${experienceIndex}) > div.pvs-list__outer-container > ul.pvs-list > li.artdeco-list__item`, (nodes) => {
+        rawExperiencesData = await page.$$eval(`main > section.artdeco-card.ember-view:nth-child(${experienceIndex}) > div.pvs-list__outer-container > ul.pvs-list > li.artdeco-list__item`, (nodes) => {
 
           let data: RawExperience[] = []
 
           // Using a for loop so we can use await inside of it
           for (const node of nodes) {
 
-            let title, employmentType, company, companyLogo, companyUrl, description, startDate, endDate, dateRangeText, endDateIsPresent,
+            let title, employmentType, company, companyLogo, companyUrl, description, startDate, endDate, dateRangeText,
+              endDateIsPresent,
               location;
 
-            const titleElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > div > span > span.visually-hidden');
+            const titleElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div > div > span > span.visually-hidden');
+            console.log(titleElement?.textContent)
             title = titleElement?.textContent || null
 
-            const employmentTypeElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(2) > span.visually-hidden');
+            const employmentTypeElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div.display-flex.flex-column > span:nth-child(2) > span.visually-hidden');
             employmentType = employmentTypeElement?.textContent || null
 
             const companyElement = employmentTypeElement?.textContent || "";
-            let companyData = companyElement?.split("·")[0].trim() || "";
-            company = companyData.trim() || null;
+            let companyData = companyElement?.split("·")?.[0]?.trim() || "";
+            company = companyData?.trim() || null;
 
 
             const companyLogoElement = node.querySelector('div > a > div.ivm-image-view-model.pvs-entity__image > div.ivm-view-attr__img-wrapper.ivm-view-attr__img-wrapper--use-img-tag.display-flex > img')
@@ -670,12 +687,12 @@ export class LinkedInProfileScraper {
             const dateRangeElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(3) > span.visually-hidden');
             dateRangeText = dateRangeElement?.textContent || null
 
-            const startDatePart = dateRangeText?.split('–')[0] || null;
+            const startDatePart = dateRangeText?.split('–')?.[0] || null;
             startDate = startDatePart?.trim() || null;
 
-            const endDatePart = dateRangeText?.split('–')[1] || null;
-            endDateIsPresent = endDatePart?.trim().toLowerCase() === 'present' || false;
-            endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
+            const endDatePart = dateRangeText?.split('–')?.[1] || null;
+            endDateIsPresent = endDatePart?.trim()?.toLowerCase() === 'present' || false;
+            endDate = (endDatePart && !endDateIsPresent) ? endDatePart?.trim() : 'Present';
 
             const locationElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span:nth-child(4) > span.visually-hidden');
             location = locationElement?.textContent || null;

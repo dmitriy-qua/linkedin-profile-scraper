@@ -11,7 +11,7 @@ const app = express();
     sessionCookieValue: `${process.env.LINKEDIN_SESSION_COOKIE_VALUE}`,
     keepAlive: true,
     //headless: false,
-    timeout: 20000
+    timeout: 30000
   })
 
   // Prepare the scraper
