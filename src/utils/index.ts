@@ -1,8 +1,9 @@
 import moment from 'moment-timezone'
-import { Location } from '../index';
 import { Page } from 'puppeteer';
+import {Location} from "../interfaces";
 import countries from 'i18n-iso-countries';
 import cities from 'all-the-cities';
+
 
 export const getIsCountry = (text: string): boolean => {
   const countriesList = Object.values(countries.getNames('en'));

@@ -18,11 +18,14 @@ const app = express();
   // Loading it in memory
   await scraper.setup()
 
+
   // Usage: http://localhost:3000/?url=https://www.linkedin.com/in/dmitriy-karpenko/
+  // Usage: http://localhost:3000/?url=https://www.linkedin.com/company/solvergy
   app.get('/', async (req, res) => {
     const urlToScrape = req.query.url as string;
 
-    const result = await scraper.run(urlToScrape)
+    //const result = await scraper.scrapeUserProfile({url: urlToScrape})
+    const result = await scraper.scrapeCompanyProfile({url: urlToScrape})
 
     return res.json(result)
   })

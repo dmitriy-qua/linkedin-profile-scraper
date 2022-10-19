@@ -12,7 +12,7 @@ import { LinkedInProfileScraper } from '../index';
   // Loading it in memory
   await scraper.setup()
 
-  const result = await scraper.run('https://www.linkedin.com/in/jvandenaardweg/')
+  const result = await scraper.scrapeUserProfile({url: 'https://www.linkedin.com/in/dmitriy-karpenko/'})
   
   // When keepAlive: true, you can manually close the session using the method below.
   // This will free up your system's memory. Otherwise Puppeteer will sit idle in the background consuming memory.
