@@ -312,7 +312,6 @@ class LinkedInProfileScraper {
                         for (const node of nodes) {
                             let title, employmentType, company, companyLogo, companyUrl, description, startDate, endDate, dateRangeText, endDateIsPresent, location;
                             const titleElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div > div > span > span.visually-hidden');
-                            console.log(titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent);
                             title = (titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent) || null;
                             const employmentTypeElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div.display-flex.flex-column > span:nth-child(2) > span.visually-hidden');
                             employmentType = (employmentTypeElement === null || employmentTypeElement === void 0 ? void 0 : employmentTypeElement.textContent) || null;

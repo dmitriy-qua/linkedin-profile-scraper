@@ -663,7 +663,6 @@ export class LinkedInProfileScraper {
               location;
 
             const titleElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div > div > span > span.visually-hidden');
-            console.log(titleElement?.textContent)
             title = titleElement?.textContent || null
 
             const employmentTypeElement = node.querySelector('div > div.display-flex.flex-column > div.display-flex.flex-row > div.display-flex.flex-column > span:nth-child(2) > span.visually-hidden');
@@ -673,13 +672,11 @@ export class LinkedInProfileScraper {
             let companyData = companyElement?.split("·")?.[0]?.trim() || "";
             company = companyData?.trim() || null;
 
-
             const companyLogoElement = node.querySelector('div > a > div.ivm-image-view-model.pvs-entity__image > div.ivm-view-attr__img-wrapper.ivm-view-attr__img-wrapper--use-img-tag.display-flex > img')
             companyLogo = companyLogoElement?.getAttribute('src') || null
 
             const companyUrlElement = node.querySelector('div > a')
             companyUrl = companyUrlElement?.getAttribute('href') || null
-
 
             const descriptionElement = node.querySelector('div > div.display-flex.flex-column.full-width.align-self-center > div.pvs-list__outer-container > ul > li > div > ul > li > div > div > div > div > span.visually-hidden');
             description = descriptionElement?.textContent || null
