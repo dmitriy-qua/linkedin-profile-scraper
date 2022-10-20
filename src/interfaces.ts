@@ -25,12 +25,14 @@ export interface Profile {
 export interface RawCompanyProfile {
   description: string | null;
   website: string | null;
+  employees: string | null;
   industries: string[] | [];
 }
 
 export interface CompanyProfile {
   description: string | null;
   website: string | null;
+  employees: string | null;
   industries: string[] | [];
 }
 

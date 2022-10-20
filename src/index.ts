@@ -686,7 +686,7 @@ export class LinkedInProfileScraper {
 
       const rawCompanyProfileData: RawCompanyProfile = await page.evaluate(() => {
 
-        let description, website, industries: string[] = []
+        let description, website, employees, industries: string[] = []
 
         const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card')
 
@@ -714,6 +714,8 @@ export class LinkedInProfileScraper {
               const regex = new RegExp([", ", "and "].reduce((acc, s, i) => acc += `${!i ? "" : "|"}${s}`, ""), "g");
               const specialties = content.split(regex)
               industries.push(...specialties)
+            } else if (itemType === "Company size") {
+              employees = content.split("employees")[0] + "employees"
             }
           }
         })
@@ -721,7 +723,8 @@ export class LinkedInProfileScraper {
         return {
           description,
           website,
-          industries
+          industries,
+          employees
         } as RawCompanyProfile
       })
 

@@ -427,7 +427,7 @@ class LinkedInProfileScraper {
                 utils_1.statusLog(logSection, 'Parsing profile data...', scraperSessionId);
                 const rawCompanyProfileData = yield page.evaluate(() => {
                     var _a;
-                    let description, website, industries = [];
+                    let description, website, employees, industries = [];
                     const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card');
                     const descriptionElement = profileSection === null || profileSection === void 0 ? void 0 : profileSection.querySelector('p.break-words');
                     description = (descriptionElement === null || descriptionElement === void 0 ? void 0 : descriptionElement.textContent) || null;
@@ -450,12 +450,16 @@ class LinkedInProfileScraper {
                                 const specialties = content.split(regex);
                                 industries.push(...specialties);
                             }
+                            else if (itemType === "Company size") {
+                                employees = content.split("employees")[0] + "employees";
+                            }
                         }
                     });
                     return {
                         description,
                         website,
-                        industries
+                        industries,
+                        employees
                     };
                 });
                 const companyProfile = Object.assign(Object.assign({}, rawCompanyProfileData), { description: utils_1.getCleanText(rawCompanyProfileData.description) });
