@@ -170,7 +170,7 @@ class LinkedInProfileScraper {
                 }
                 return prev;
             }, {});
-            blockedHostsObject = {};
+            blockedHostsObject = Object.assign(Object.assign({}, blockedHostsObject), { 'static.chartbeat.com': true, 'scdn.cxense.com': true, 'api.cxense.com': true, 'www.googletagmanager.com': true, 'connect.facebook.net': true, 'platform.twitter.com': true, 'tags.tiqcdn.com': true, 'dev.visualwebsiteoptimizer.com': true, 'smartlock.google.com': true, 'cdn.embedly.com': true, 'www.pagespeed-mod.com': true, 'ssl.google-analytics.com': true, 'radar.cedexis.com': true, 'sb.scorecardresearch.com': true });
             return blockedHostsObject;
         };
         this.close = (page) => {
@@ -231,26 +231,26 @@ class LinkedInProfileScraper {
                 throw new errors_1.SessionExpired(errorMessage);
             }
         });
-        this.run = (profileUrl) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        this.scrapeUserProfile = ({ url }) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const logSection = 'run';
             const scraperSessionId = new Date().getTime();
             if (!this.browser) {
                 throw new Error('Browser is not set. Please run the setup method first.');
             }
-            if (!profileUrl) {
+            if (!url) {
                 throw new Error('No profileUrl given.');
             }
-            if (!profileUrl.includes('linkedin.com/')) {
-                throw new Error('The given URL to scrape is not a linkedin.com url.');
+            if (!url.includes('linkedin.com/in')) {
+                throw new Error('The given URL to scrape is not a user profile linkedin.com url.');
             }
             try {
                 const page = yield this.createPage();
-                utils_1.statusLog(logSection, `Navigating to LinkedIn profile: ${profileUrl}`, scraperSessionId);
-                yield page.goto(profileUrl, {
+                utils_1.statusLog(logSection, `Navigating to LinkedIn profile: ${url}`, scraperSessionId);
+                yield page.goto(url, {
                     waitUntil: 'domcontentloaded',
                     timeout: this.options.timeout
                 });
-                yield page.waitFor(3000);
+                yield page.waitFor(5000);
                 page.on('console', (msg) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                     const msgArgs = msg.args();
                     for (let i = 0; i < msgArgs.length; ++i) {
@@ -260,7 +260,6 @@ class LinkedInProfileScraper {
                 utils_1.statusLog(logSection, 'LinkedIn profile page loaded!', scraperSessionId);
                 utils_1.statusLog(logSection, 'Getting all the LinkedIn profile data by scrolling the page to the bottom, so all the data gets loaded into the page...', scraperSessionId);
                 yield autoScroll(page);
-                utils_1.statusLog(logSection, 'Parsing data...', scraperSessionId);
                 utils_1.statusLog(logSection, 'Parsing profile data...', scraperSessionId);
                 const rawUserProfileData = yield page.evaluate(() => {
                     const profileSection = document.querySelector('.pv-top-card');
@@ -375,7 +374,7 @@ class LinkedInProfileScraper {
                         durationInDays, description: utils_1.getCleanText(rawExperience.description) });
                 });
                 utils_1.statusLog(logSection, `Got experiences data: ${JSON.stringify(experiences)}`, scraperSessionId);
-                utils_1.statusLog(logSection, `Done! Returned profile details for: ${profileUrl}`, scraperSessionId);
+                utils_1.statusLog(logSection, `Done! Returned profile details for: ${url}`, scraperSessionId);
                 if (!this.options.keepAlive) {
                     utils_1.statusLog(logSection, 'Not keeping the session alive.');
                     yield this.close(page);
@@ -388,6 +387,91 @@ class LinkedInProfileScraper {
                 return {
                     userProfile,
                     experiences,
+                };
+            }
+            catch (err) {
+                yield this.close();
+                utils_1.statusLog(logSection, 'An error occurred during a run.');
+                throw err;
+            }
+        });
+        this.scrapeCompanyProfile = ({ url }) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const logSection = 'run';
+            const scraperSessionId = new Date().getTime();
+            if (!this.browser) {
+                throw new Error('Browser is not set. Please run the setup method first.');
+            }
+            if (!url) {
+                throw new Error('No profileUrl given.');
+            }
+            if (!url.includes('linkedin.com/company')) {
+                throw new Error('The given URL to scrape is not a company profile linkedin.com url.');
+            }
+            try {
+                const page = yield this.createPage();
+                utils_1.statusLog(logSection, `Navigating to LinkedIn profile: ${url}`, scraperSessionId);
+                yield page.goto(`${url}/about`, {
+                    waitUntil: 'domcontentloaded',
+                    timeout: this.options.timeout
+                });
+                yield page.waitFor(5000);
+                page.on('console', (msg) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                    const msgArgs = msg.args();
+                    for (let i = 0; i < msgArgs.length; ++i) {
+                        console.log(yield msgArgs[i].jsonValue());
+                    }
+                }));
+                utils_1.statusLog(logSection, 'LinkedIn profile page loaded!', scraperSessionId);
+                utils_1.statusLog(logSection, 'Getting all the LinkedIn profile data by scrolling the page to the bottom, so all the data gets loaded into the page...', scraperSessionId);
+                yield autoScroll(page);
+                utils_1.statusLog(logSection, 'Parsing profile data...', scraperSessionId);
+                const rawCompanyProfileData = yield page.evaluate(() => {
+                    var _a;
+                    let description, website, industries = [];
+                    const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card');
+                    const descriptionElement = profileSection === null || profileSection === void 0 ? void 0 : profileSection.querySelector('p.break-words');
+                    description = (descriptionElement === null || descriptionElement === void 0 ? void 0 : descriptionElement.textContent) || null;
+                    const otherData = profileSection === null || profileSection === void 0 ? void 0 : profileSection.querySelector('dl.overflow-hidden');
+                    const splitters = ["Website", "Industry", "Company size", "Headquarters", "Founded", "Specialties"];
+                    const regex = new RegExp(splitters.reduce((acc, s, i) => acc += `${!i ? "" : "|"}(?=${s})`, ""), "g");
+                    const data = ((_a = otherData === null || otherData === void 0 ? void 0 : otherData.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, "").replace(/  +/g, "").split(regex)) || [];
+                    data.forEach(item => {
+                        const itemType = splitters.find(splitter => item.startsWith(splitter));
+                        if (itemType) {
+                            const content = item.replace(itemType, "");
+                            if (itemType === "Website") {
+                                website = content;
+                            }
+                            else if (itemType === "Industry") {
+                                industries.push(content);
+                            }
+                            else if (itemType === "Specialties") {
+                                const regex = new RegExp([", ", "and "].reduce((acc, s, i) => acc += `${!i ? "" : "|"}${s}`, ""), "g");
+                                const specialties = content.split(regex);
+                                industries.push(...specialties);
+                            }
+                        }
+                    });
+                    return {
+                        description,
+                        website,
+                        industries
+                    };
+                });
+                const companyProfile = Object.assign(Object.assign({}, rawCompanyProfileData), { description: utils_1.getCleanText(rawCompanyProfileData.description) });
+                utils_1.statusLog(logSection, `Got company profile data: ${JSON.stringify(companyProfile)}`, scraperSessionId);
+                utils_1.statusLog(logSection, `Done! Returned profile details for: ${url}`, scraperSessionId);
+                if (!this.options.keepAlive) {
+                    utils_1.statusLog(logSection, 'Not keeping the session alive.');
+                    yield this.close(page);
+                    utils_1.statusLog(logSection, 'Done. Puppeteer is closed.');
+                }
+                else {
+                    utils_1.statusLog(logSection, 'Done. Puppeteer is being kept alive in memory.');
+                    yield page.close();
+                }
+                return {
+                    companyProfile,
                 };
             }
             catch (err) {

@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
-import { Location } from '../index';
 import { Page } from 'puppeteer';
+import { Location } from "../interfaces";
 export declare const getIsCountry: (text: string) => boolean;
 export declare const getIsCity: (text: string) => boolean;
 export declare const formatDate: (date: moment.MomentInput | string) => string;

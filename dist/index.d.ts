@@ -1,44 +1,5 @@
 import puppeteer from 'puppeteer';
-export interface Location {
-    city: string | null;
-    province: string | null;
-    country: string | null;
-}
-export interface Profile {
-    fullName: string | null;
-    title: string | null;
-    location: Location | null;
-    photo: string | null;
-    description: string | null;
-    url: string;
-}
-export interface Experience {
-    title: string | null;
-    company: string | null;
-    companyLogo: string | null;
-    companyUrl: string | null;
-    employmentType: string | null;
-    location: Location | null;
-    startDate: string | null;
-    endDate: string | null;
-    endDateIsPresent: boolean;
-    durationInDays: number | null;
-    description: string | null;
-}
-interface ScraperUserDefinedOptions {
-    sessionCookieValue: string;
-    keepAlive?: boolean;
-    userAgent?: string;
-    timeout?: number;
-    headless?: boolean;
-}
-interface ScraperOptions {
-    sessionCookieValue: string;
-    keepAlive: boolean;
-    userAgent: string;
-    timeout: number;
-    headless: boolean;
-}
+import { CompanyProfile, Experience, Profile, ScraperOptions, ScraperUserDefinedOptions } from "./interfaces";
 export declare class LinkedInProfileScraper {
     readonly options: ScraperOptions;
     private browser;
@@ -50,9 +11,15 @@ export declare class LinkedInProfileScraper {
     private getBlockedHosts;
     close: (page?: puppeteer.Page | undefined) => Promise<void>;
     checkIfLoggedIn: () => Promise<void>;
-    run: (profileUrl: string) => Promise<{
+    scrapeUserProfile: ({ url }: {
+        url: string;
+    }) => Promise<{
         userProfile: Profile;
         experiences: Experience[];
     }>;
+    scrapeCompanyProfile: ({ url }: {
+        url: string;
+    }) => Promise<{
+        companyProfile: CompanyProfile;
+    }>;
 }
-export {};

@@ -441,28 +441,28 @@
         "signature": "8621a7b709bc463d5ab5a96d95bae465323fbf80b8a3d9eff5d2d6b60c795dd1",
         "affectsGlobalScope": false
       },
+      "../src/interfaces.ts": {
+        "version": "de14f3fd362b8f720ef133f0542e9bd1c8258a8fdeaa675b4d042d7b72014eb3",
+        "signature": "fbc72d612394715d0752b85a5cd917dcf9419533a7d100f910dffb9e5d480976",
+        "affectsGlobalScope": false
+      },
       "../node_modules/i18n-iso-countries/index.d.ts": {
         "version": "d399ec13a81b9587f96833daf4d03dfbbbae1dfa078a9ecd523ee584899b72c3",
         "signature": "d399ec13a81b9587f96833daf4d03dfbbbae1dfa078a9ecd523ee584899b72c3",
         "affectsGlobalScope": false
       },
       "../src/utils/index.ts": {
-        "version": "0f2a5b8e22650c22398daf7c7eb0e91021369038d835f1061a0fe79bbdf6563d",
-        "signature": "ffbab9a9e38d299b82e4d78f4378aa4c7a1976d90cae8aff618c1d98bbf3c6b0",
+        "version": "c4d289ad7239e99ae0dddab0bbdb799ff682efa7688d3b81e8e7dc50a4d9de67",
+        "signature": "9108d1101e877c2ef158a0f48e66a84e5780dcbef9b92be47b3bcdc153228dcd",
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
-        "version": "83cf9fd7827cf2d7eef2bc054b40822f388fcef71cd6a4bae02afdb413d24595",
-        "signature": "5bf23124e8b647eded902e39135339d0c9120f008d9ba9bbf586b1bda3b47238",
-        "affectsGlobalScope": false
-      },
-      "../src/examples/list-of-urls.ts": {
-        "version": "855fdef7605b0107da953c33f00ddc6b2c7729361ff18b78b85400083a25deca",
-        "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
+        "version": "46ea979b43233ada5a0761f34e114cf469c276be87a48f42d63d253c9c9680d1",
+        "signature": "9dc3ca25f6c2b1fbd5699a908cdfa7572a77877a4a5037242d6ec297d7583099",
         "affectsGlobalScope": false
       },
       "../src/examples/module.ts": {
-        "version": "81d520a5908a72ee81307d202d868b6fb14e86a9289c0841f751cfb328069245",
+        "version": "9da005b460c3da1507b22e3c6878f752dbfdfb16b5f91116e913501ac20cca94",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
@@ -507,7 +507,7 @@
         "affectsGlobalScope": false
       },
       "../src/examples/server.ts": {
-        "version": "fa79907c7c596e7caa0ac5831ab03e10a801bfa86ed9d95a59f75f4388c7ae62",
+        "version": "14bc12e24ed297189b5213ec7e0695b0df5c481191222cb95960de69e60cee52",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
@@ -1379,13 +1379,6 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../src/examples/list-of-urls.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../src/index.ts"
-      ],
       "../src/examples/module.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -1410,7 +1403,14 @@
         "../node_modules/tree-kill/index.d.ts",
         "../src/blocked-hosts.ts",
         "../src/errors.ts",
+        "../src/interfaces.ts",
         "../src/utils/index.ts"
+      ],
+      "../src/interfaces.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
       ],
       "../src/typings/all-the-cities/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
@@ -1426,7 +1426,7 @@
         "../node_modules/@types/puppeteer/index.d.ts",
         "../node_modules/i18n-iso-countries/index.d.ts",
         "../node_modules/moment-timezone/index.d.ts",
-        "../src/index.ts",
+        "../src/interfaces.ts",
         "../src/typings/all-the-cities/index.d.ts"
       ]
     },
@@ -2188,7 +2188,8 @@
         "../node_modules/@types/node/util.d.ts"
       ],
       "../src/index.ts": [
-        "../node_modules/@types/puppeteer/index.d.ts"
+        "../node_modules/@types/puppeteer/index.d.ts",
+        "../src/interfaces.ts"
       ],
       "../src/typings/all-the-cities/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
@@ -2199,7 +2200,7 @@
       "../src/utils/index.ts": [
         "../node_modules/@types/puppeteer/index.d.ts",
         "../node_modules/moment-timezone/index.d.ts",
-        "../src/index.ts"
+        "../src/interfaces.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -2309,10 +2310,10 @@
       "../node_modules/typescript/lib/lib.esnext.intl.d.ts",
       "../src/blocked-hosts.ts",
       "../src/errors.ts",
-      "../src/examples/list-of-urls.ts",
       "../src/examples/module.ts",
       "../src/examples/server.ts",
       "../src/index.ts",
+      "../src/interfaces.ts",
       "../src/typings/all-the-cities/index.d.ts",
       "../src/utils/index.ts"
     ]

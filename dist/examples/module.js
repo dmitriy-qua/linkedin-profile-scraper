@@ -9,7 +9,7 @@ const index_1 = require("../index");
         keepAlive: false
     });
     yield scraper.setup();
-    const result = yield scraper.run('https://www.linkedin.com/in/jvandenaardweg/');
+    const result = yield scraper.scrapeUserProfile({ url: 'https://www.linkedin.com/in/dmitriy-karpenko/' });
     console.log(result);
 }))();
 //# sourceMappingURL=module.js.map

@@ -14,7 +14,7 @@ const app = express_1.default();
     yield scraper.setup();
     app.get('/', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         const urlToScrape = req.query.url;
-        const result = yield scraper.run(urlToScrape);
+        const result = yield scraper.scrapeCompanyProfile({ url: urlToScrape });
         return res.json(result);
     }));
     app.listen(process.env.PORT || 3000);
