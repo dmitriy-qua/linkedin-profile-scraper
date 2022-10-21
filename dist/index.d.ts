@@ -11,15 +11,13 @@ export declare class LinkedInProfileScraper {
     private getBlockedHosts;
     close: (page?: puppeteer.Page | undefined) => Promise<void>;
     checkIfLoggedIn: () => Promise<void>;
-    scrapeUserProfile: ({ url }: {
-        url: string;
-    }) => Promise<{
-        userProfile: Profile;
-        experiences: Experience[];
-    }>;
-    scrapeCompanyProfile: ({ url }: {
+    private scrapeUserProfile;
+    private scrapeCompanyProfile;
+    scrapeProfile: ({ url }: {
         url: string;
     }) => Promise<{
         companyProfile: CompanyProfile;
+        userProfile: Profile;
+        experiences: Experience[];
     }>;
 }

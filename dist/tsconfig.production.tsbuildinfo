@@ -151,6 +151,11 @@
         "signature": "571261034908ba5d7a6d8c34c30c857a37aacf9f1cc6f4d0644a0d760bbc2ec9",
         "affectsGlobalScope": false
       },
+      "../src/constants.ts": {
+        "version": "927cb98d2147c6902c41aefd9323e760e4a6aaf2af2b1a91d456e3864f821b43",
+        "signature": "5a25f8977e8966f2610a7c45bea0f1dbe0cd12162a0cffb91fe3b5de42344ba4",
+        "affectsGlobalScope": false
+      },
       "../src/errors.ts": {
         "version": "5483d1127d474e8303bb2db8e798ba7898c77e93acdd3995ea3cc2a174e66ee8",
         "signature": "4ab8146102edc4d402bd6f292176eef3b07b9f13cfce755a5a79b9f4ab3dcd8b",
@@ -457,8 +462,8 @@
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
-        "version": "ffac431654c5f2476122895acd3c55a58f74f9b5ae5a82211bb6192a189795a4",
-        "signature": "9dc3ca25f6c2b1fbd5699a908cdfa7572a77877a4a5037242d6ec297d7583099",
+        "version": "661e9ca3ec69ebeee820a868ee728f76413c417da48aa9f6f0b8e8441067ac8d",
+        "signature": "1d2ab60f5a75c81baf6d209c8759ac00532a9881d374301425759ad66066ecb7",
         "affectsGlobalScope": false
       },
       "../src/examples/module.ts": {
@@ -507,7 +512,7 @@
         "affectsGlobalScope": false
       },
       "../src/examples/server.ts": {
-        "version": "14bc12e24ed297189b5213ec7e0695b0df5c481191222cb95960de69e60cee52",
+        "version": "38ed6ff0c8922d055d57157b3cff2a7cdd00187c0281a2f929d1857794a0fdde",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
@@ -1373,6 +1378,12 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
+      "../src/constants.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
       "../src/errors.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -1402,6 +1413,7 @@
         "../node_modules/@types/puppeteer/index.d.ts",
         "../node_modules/tree-kill/index.d.ts",
         "../src/blocked-hosts.ts",
+        "../src/constants.ts",
         "../src/errors.ts",
         "../src/interfaces.ts",
         "../src/utils/index.ts"
@@ -2309,8 +2321,21 @@
       "../node_modules/typescript/lib/lib.es5.d.ts",
       "../node_modules/typescript/lib/lib.esnext.intl.d.ts",
       "../src/blocked-hosts.ts",
+      "../src/constants.ts",
       "../src/errors.ts",
-      "../src/examples/module.ts",
+      [
+        "../src/examples/module.ts",
+        [
+          {
+            "file": "../src/examples/module.ts",
+            "start": 349,
+            "length": 17,
+            "messageText": "Property 'scrapeUserProfile' is private and only accessible within class 'LinkedInProfileScraper'.",
+            "category": 1,
+            "code": 2341
+          }
+        ]
+      ],
       "../src/examples/server.ts",
       "../src/index.ts",
       "../src/interfaces.ts",

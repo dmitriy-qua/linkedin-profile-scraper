@@ -7,6 +7,7 @@ const tree_kill_1 = tslib_1.__importDefault(require("tree-kill"));
 const blocked_hosts_1 = tslib_1.__importDefault(require("./blocked-hosts"));
 const utils_1 = require("./utils");
 const errors_1 = require("./errors");
+const constants_1 = require("./constants");
 function autoScroll(page) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         yield page.evaluate(() => {
@@ -250,7 +251,7 @@ class LinkedInProfileScraper {
                     waitUntil: 'domcontentloaded',
                     timeout: this.options.timeout
                 });
-                yield page.waitFor(5000);
+                yield page.waitFor(3000);
                 page.on('console', (msg) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                     const msgArgs = msg.args();
                     for (let i = 0; i < msgArgs.length; ++i) {
@@ -414,7 +415,7 @@ class LinkedInProfileScraper {
                     waitUntil: 'domcontentloaded',
                     timeout: this.options.timeout
                 });
-                yield page.waitFor(5000);
+                yield page.waitFor(3000);
                 page.on('console', (msg) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                     const msgArgs = msg.args();
                     for (let i = 0; i < msgArgs.length; ++i) {
@@ -427,7 +428,7 @@ class LinkedInProfileScraper {
                 utils_1.statusLog(logSection, 'Parsing profile data...', scraperSessionId);
                 const rawCompanyProfileData = yield page.evaluate(() => {
                     var _a;
-                    let description, website, employees, industries = [];
+                    let description, website = "", employees = "", industries = [];
                     const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card');
                     const descriptionElement = profileSection === null || profileSection === void 0 ? void 0 : profileSection.querySelector('p.break-words');
                     description = (descriptionElement === null || descriptionElement === void 0 ? void 0 : descriptionElement.textContent) || null;
@@ -447,7 +448,7 @@ class LinkedInProfileScraper {
                             }
                             else if (itemType === "Specialties") {
                                 const regex = new RegExp([", ", "and "].reduce((acc, s, i) => acc += `${!i ? "" : "|"}${s}`, ""), "g");
-                                const specialties = content.split(regex);
+                                const specialties = content.split(regex).filter(s => !!s);
                                 industries.push(...specialties);
                             }
                             else if (itemType === "Company size") {
@@ -483,6 +484,13 @@ class LinkedInProfileScraper {
                 utils_1.statusLog(logSection, 'An error occurred during a run.');
                 throw err;
             }
+        });
+        this.scrapeProfile = ({ url }) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            var _a;
+            const userProfileResult = yield this.scrapeUserProfile({ url });
+            const companyUrl = ((_a = userProfileResult === null || userProfileResult === void 0 ? void 0 : userProfileResult.experiences[0]) === null || _a === void 0 ? void 0 : _a.companyUrl) || constants_1.FAKE_COMPANY_URL;
+            const companyProfileResult = yield this.scrapeCompanyProfile({ url: companyUrl });
+            return Object.assign(Object.assign({}, userProfileResult), companyProfileResult);
         });
         const logSection = 'constructing';
         const errorPrefix = 'Error during setup.';

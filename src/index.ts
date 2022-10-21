@@ -22,6 +22,7 @@ import {
   ScraperOptions,
   ScraperUserDefinedOptions
 } from "./interfaces";
+import {FAKE_COMPANY_URL} from "./constants";
 
 
 async function autoScroll(page: Page) {
@@ -386,7 +387,7 @@ export class LinkedInProfileScraper {
   /**
    * Method to scrape a user profile.
    */
-  public scrapeUserProfile = async ({url}: { url: string }) => {
+  private scrapeUserProfile = async ({url}: { url: string }) => {
     const logSection = 'run'
 
     const scraperSessionId = new Date().getTime();
@@ -416,7 +417,7 @@ export class LinkedInProfileScraper {
         timeout: this.options.timeout
       });
 
-      await page.waitFor(5000)
+      await page.waitFor(3000)
 
       page.on('console', async (msg) => {
         const msgArgs = msg.args();
@@ -637,7 +638,7 @@ export class LinkedInProfileScraper {
   /**
    * Method to scrape a company profile.
    */
-  public scrapeCompanyProfile = async ({url}: { url: string }) => {
+  private scrapeCompanyProfile = async ({url}: { url: string }) => {
     const logSection = 'run'
 
     const scraperSessionId = new Date().getTime();
@@ -667,7 +668,7 @@ export class LinkedInProfileScraper {
         timeout: this.options.timeout
       });
 
-      await page.waitFor(5000)
+      await page.waitFor(3000)
 
       page.on('console', async (msg) => {
         const msgArgs = msg.args();
@@ -686,7 +687,10 @@ export class LinkedInProfileScraper {
 
       const rawCompanyProfileData: RawCompanyProfile = await page.evaluate(() => {
 
-        let description, website, employees, industries: string[] = []
+        let description,
+          website: string = "",
+          employees: string = "",
+          industries: string[] = []
 
         const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card')
 
@@ -712,7 +716,7 @@ export class LinkedInProfileScraper {
               industries.push(content)
             } else if (itemType === "Specialties") {
               const regex = new RegExp([", ", "and "].reduce((acc, s, i) => acc += `${!i ? "" : "|"}${s}`, ""), "g");
-              const specialties = content.split(regex)
+              const specialties = content.split(regex).filter(s => !!s)
               industries.push(...specialties)
             } else if (itemType === "Company size") {
               employees = content.split("employees")[0] + "employees"
@@ -761,6 +765,20 @@ export class LinkedInProfileScraper {
 
       // Throw the error up, allowing the user to handle this error himself.
       throw err;
+    }
+  }
+
+  public scrapeProfile = async ({url}: { url: string }) => {
+
+    const userProfileResult = await this.scrapeUserProfile({url})
+
+    const companyUrl = userProfileResult?.experiences[0]?.companyUrl || FAKE_COMPANY_URL
+
+    const companyProfileResult = await this.scrapeCompanyProfile({url: companyUrl})
+
+    return {
+      ...userProfileResult,
+      ...companyProfileResult
     }
   }
 }
