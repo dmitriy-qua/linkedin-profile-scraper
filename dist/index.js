@@ -217,9 +217,10 @@ class LinkedInProfileScraper {
             const page = yield this.createPage();
             utils_1.statusLog(logSection, 'Checking if we are still logged in...');
             yield page.goto('https://www.linkedin.com/login', {
-                waitUntil: 'networkidle2',
+                waitUntil: 'domcontentloaded',
                 timeout: this.options.timeout
             });
+            yield page.waitFor(3000);
             const url = page.url();
             const isLoggedIn = !url.endsWith('/login');
             yield page.close();

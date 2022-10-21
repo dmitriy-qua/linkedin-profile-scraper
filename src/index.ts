@@ -365,9 +365,11 @@ export class LinkedInProfileScraper {
     // If we do not get redirected and stay on /login, we are logged out
     // If we get redirect to /feed, we are logged in
     await page.goto('https://www.linkedin.com/login', {
-      waitUntil: 'networkidle2',
+      waitUntil: 'domcontentloaded',
       timeout: this.options.timeout
     })
+
+    await page.waitFor(3000)
 
     const url = page.url()
 
