@@ -428,12 +428,12 @@ class LinkedInProfileScraper {
                 utils_1.statusLog(logSection, 'Parsing profile data...', scraperSessionId);
                 const rawCompanyProfileData = yield page.evaluate(() => {
                     var _a;
-                    let description, website = "", employees = "", industries = [];
+                    let description, website = "", employees = "", phone = "", industries = [];
                     const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card');
                     const descriptionElement = profileSection === null || profileSection === void 0 ? void 0 : profileSection.querySelector('p.break-words');
                     description = (descriptionElement === null || descriptionElement === void 0 ? void 0 : descriptionElement.textContent) || null;
                     const otherData = profileSection === null || profileSection === void 0 ? void 0 : profileSection.querySelector('dl.overflow-hidden');
-                    const splitters = ["Website", "Industry", "Company size", "Headquarters", "Founded", "Specialties"];
+                    const splitters = ["Website", "Phone", "Industry", "Company size", "Headquarters", "Founded", "Specialties"];
                     const regex = new RegExp(splitters.reduce((acc, s, i) => acc += `${!i ? "" : "|"}(?=${s})`, ""), "g");
                     const data = ((_a = otherData === null || otherData === void 0 ? void 0 : otherData.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, "").replace(/  +/g, "").split(regex)) || [];
                     data.forEach(item => {
@@ -454,11 +454,15 @@ class LinkedInProfileScraper {
                             else if (itemType === "Company size") {
                                 employees = content.split("employees")[0] + "employees";
                             }
+                            else if (itemType === "Phone") {
+                                phone = content.split("Phone")[0];
+                            }
                         }
                     });
                     return {
                         description,
                         website,
+                        phone,
                         industries,
                         employees
                     };

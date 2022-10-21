@@ -690,6 +690,7 @@ export class LinkedInProfileScraper {
         let description,
           website: string = "",
           employees: string = "",
+          phone: string = "",
           industries: string[] = []
 
         const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card')
@@ -699,7 +700,7 @@ export class LinkedInProfileScraper {
 
         const otherData = profileSection?.querySelector('dl.overflow-hidden')
 
-        const splitters = ["Website", "Industry", "Company size", "Headquarters", "Founded", "Specialties"]
+        const splitters = ["Website", "Phone", "Industry", "Company size", "Headquarters", "Founded", "Specialties"]
         const regex = new RegExp(splitters.reduce((acc, s, i) => acc += `${!i ? "" : "|"}(?=${s})`, ""), "g");
 
         const data = otherData?.textContent?.replace(/\n/g, "").replace(/  +/g, "").split(regex) || []
@@ -720,6 +721,8 @@ export class LinkedInProfileScraper {
               industries.push(...specialties)
             } else if (itemType === "Company size") {
               employees = content.split("employees")[0] + "employees"
+            } else if (itemType === "Phone") {
+              phone = content.split("Phone")[0]
             }
           }
         })
@@ -727,6 +730,7 @@ export class LinkedInProfileScraper {
         return {
           description,
           website,
+          phone,
           industries,
           employees
         } as RawCompanyProfile

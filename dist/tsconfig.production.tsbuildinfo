@@ -447,8 +447,8 @@
         "affectsGlobalScope": false
       },
       "../src/interfaces.ts": {
-        "version": "d6ee1009f44f80573d7d1afdb749cb750fc106707ed793a4110f237d0d2a0895",
-        "signature": "40731ca3ab837b464872c1f419f703f3bc5303dc37b5c49d7fb489bbecd67487",
+        "version": "32540ce50caa4ca9d34c1a3d904f414858d15aa4cc5918d21495f6f06fb8a526",
+        "signature": "c1bcfc6a6b2978e1e2f27c30692164c1ef4ed84f945e297ef56b247aa863e1fe",
         "affectsGlobalScope": false
       },
       "../node_modules/i18n-iso-countries/index.d.ts": {
@@ -462,13 +462,8 @@
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
-        "version": "661e9ca3ec69ebeee820a868ee728f76413c417da48aa9f6f0b8e8441067ac8d",
+        "version": "76a9f6274bb3042ada8135a032de7b381945aea98f20f8b71ff0a02310d240b0",
         "signature": "1d2ab60f5a75c81baf6d209c8759ac00532a9881d374301425759ad66066ecb7",
-        "affectsGlobalScope": false
-      },
-      "../src/examples/module.ts": {
-        "version": "9da005b460c3da1507b22e3c6878f752dbfdfb16b5f91116e913501ac20cca94",
-        "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/range-parser/index.d.ts": {
@@ -1389,13 +1384,6 @@
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
-      ],
-      "../src/examples/module.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../src/index.ts"
       ],
       "../src/examples/server.ts": [
         "../node_modules/@types/express/index.d.ts",
@@ -2323,19 +2311,6 @@
       "../src/blocked-hosts.ts",
       "../src/constants.ts",
       "../src/errors.ts",
-      [
-        "../src/examples/module.ts",
-        [
-          {
-            "file": "../src/examples/module.ts",
-            "start": 349,
-            "length": 17,
-            "messageText": "Property 'scrapeUserProfile' is private and only accessible within class 'LinkedInProfileScraper'.",
-            "category": 1,
-            "code": 2341
-          }
-        ]
-      ],
       "../src/examples/server.ts",
       "../src/index.ts",
       "../src/interfaces.ts",
