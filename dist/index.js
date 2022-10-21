@@ -405,9 +405,6 @@ class LinkedInProfileScraper {
             if (!url) {
                 throw new Error('No profileUrl given.');
             }
-            if (!url.includes('linkedin.com/company')) {
-                throw new Error('The given URL to scrape is not a company profile linkedin.com url.');
-            }
             try {
                 const page = yield this.createPage();
                 utils_1.statusLog(logSection, `Navigating to LinkedIn profile: ${url}`, scraperSessionId);

@@ -651,10 +651,6 @@ export class LinkedInProfileScraper {
       throw new Error('No profileUrl given.')
     }
 
-    if (!url.includes('linkedin.com/company')) {
-      throw new Error('The given URL to scrape is not a company profile linkedin.com url.')
-    }
-
     try {
       // Each run has it's own page
       const page = await this.createPage();
