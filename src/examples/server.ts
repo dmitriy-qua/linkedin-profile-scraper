@@ -25,6 +25,7 @@ const app = express();
 
     const result = await scraper.scrapeProfile({url: urlToScrape})
 
+
     return res.json(result)
   })
 

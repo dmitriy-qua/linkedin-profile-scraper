@@ -721,8 +721,8 @@ export class LinkedInProfileScraper {
               industries.push(...specialties)
             } else if (itemType === "Company size") {
               employees = content.split("employees")[0] + "employees"
-            } else if (itemType === "Phone") {
-              phone = content.split("Phone")[0]
+            } else if (itemType === "Phone" && !phone) {
+              phone = content
             }
           }
         })
