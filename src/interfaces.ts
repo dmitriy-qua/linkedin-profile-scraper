@@ -25,6 +25,8 @@ export interface Profile {
 export interface RawCompanyProfile {
   description: string | null;
   website: string | null;
+  url: string | null;
+  id: string | null;
   phone: string | null;
   employees: string | null;
   industries: string[] | [];
@@ -33,6 +35,8 @@ export interface RawCompanyProfile {
 export interface CompanyProfile {
   description: string | null;
   website: string | null;
+  url: string | null;
+  id: string | null;
   phone: string | null;
   employees: string | null;
   industries: string[] | [];

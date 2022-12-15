@@ -685,6 +685,13 @@ export class LinkedInProfileScraper {
 
       const rawCompanyProfileData: RawCompanyProfile = await page.evaluate(() => {
 
+        const url = window.location.href
+          .replace('about/', '')
+
+        const id = url
+          .replace('https://www.linkedin.com/company/', '')
+          .replace('/', '')
+
         let description,
           website: string = "",
           employees: string = "",
@@ -726,6 +733,8 @@ export class LinkedInProfileScraper {
         })
 
         return {
+          id,
+          url,
           description,
           website,
           phone,
