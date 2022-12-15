@@ -447,8 +447,8 @@
         "affectsGlobalScope": false
       },
       "../src/interfaces.ts": {
-        "version": "32540ce50caa4ca9d34c1a3d904f414858d15aa4cc5918d21495f6f06fb8a526",
-        "signature": "c1bcfc6a6b2978e1e2f27c30692164c1ef4ed84f945e297ef56b247aa863e1fe",
+        "version": "1e50a9b1684d7d0416ba0f772d611d7814814996bb1c0ab52c8396ac95efc8d0",
+        "signature": "b393d6a10db1bc7b6b049babdff5c1f130371d6014ca38b6a0155b85045f87e2",
         "affectsGlobalScope": false
       },
       "../node_modules/i18n-iso-countries/index.d.ts": {
@@ -462,7 +462,7 @@
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
-        "version": "8764100814613bf69d8de9b9b90c632b077ed395c48caf527b4a581e1a4d7b19",
+        "version": "ffa3872d2628adf971215c07b6f40d06ef9c9a186e20c8ed6e7d1e79e8f21672",
         "signature": "1d2ab60f5a75c81baf6d209c8759ac00532a9881d374301425759ad66066ecb7",
         "affectsGlobalScope": false
       },

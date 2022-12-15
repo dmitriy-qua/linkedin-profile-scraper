@@ -426,6 +426,11 @@ class LinkedInProfileScraper {
                 utils_1.statusLog(logSection, 'Parsing profile data...', scraperSessionId);
                 const rawCompanyProfileData = yield page.evaluate(() => {
                     var _a;
+                    const url = window.location.href
+                        .replace('about/', '');
+                    const id = url
+                        .replace('https://www.linkedin.com/company/', '')
+                        .replace('/', '');
                     let description, website = "", employees = "", phone = "", industries = [];
                     const profileSection = document.querySelector('.org-grid__content-height-enforcer > div > div > div > section.artdeco-card');
                     const descriptionElement = profileSection === null || profileSection === void 0 ? void 0 : profileSection.querySelector('p.break-words');
@@ -458,6 +463,8 @@ class LinkedInProfileScraper {
                         }
                     });
                     return {
+                        id,
+                        url,
                         description,
                         website,
                         phone,
