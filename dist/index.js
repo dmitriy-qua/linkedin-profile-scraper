@@ -176,6 +176,7 @@ class LinkedInProfileScraper {
         };
         this.close = (page) => {
             return new Promise((resolve, reject) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                var _a, _b;
                 const loggerPrefix = 'close';
                 this.launched = false;
                 if (page) {
@@ -193,7 +194,7 @@ class LinkedInProfileScraper {
                         utils_1.statusLog(loggerPrefix, 'Closing browser...');
                         yield this.browser.close();
                         utils_1.statusLog(loggerPrefix, 'Closed browser!');
-                        const browserProcessPid = this.browser.process().pid;
+                        const browserProcessPid = (_b = (_a = this.browser) === null || _a === void 0 ? void 0 : _a.process()) === null || _b === void 0 ? void 0 : _b.pid;
                         if (browserProcessPid) {
                             utils_1.statusLog(loggerPrefix, `Killing browser process pid: ${browserProcessPid}...`);
                             tree_kill_1.default(browserProcessPid, 'SIGKILL', (err) => {

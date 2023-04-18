@@ -325,7 +325,7 @@ export class LinkedInProfileScraper {
           await this.browser.close();
           statusLog(loggerPrefix, 'Closed browser!');
 
-          const browserProcessPid = this.browser.process().pid;
+          const browserProcessPid = this.browser?.process()?.pid;
 
           // Completely kill the browser process to prevent zombie processes
           // https://docs.browserless.io/blog/2019/03/13/more-observations.html#tip-2-when-you-re-done-kill-it-with-fire

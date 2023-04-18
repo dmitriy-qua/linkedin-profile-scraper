@@ -416,19 +416,9 @@
         "signature": "d522314e80ed71b57e3c2939d3c9594eaae63a4adf028559e6574f6b270b0fee",
         "affectsGlobalScope": false
       },
-      "../node_modules/@types/puppeteer/errors.d.ts": {
-        "version": "24074eb89fe21d5d7d8a5ed86e6c56939cf32d533f68bae213b0cdac74e03d3b",
-        "signature": "24074eb89fe21d5d7d8a5ed86e6c56939cf32d533f68bae213b0cdac74e03d3b",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/@types/puppeteer/devicedescriptors.d.ts": {
-        "version": "c9c23a4476436315c1a675f807128457b5aeadc8d3d75340e1f4b93af73551ce",
-        "signature": "c9c23a4476436315c1a675f807128457b5aeadc8d3d75340e1f4b93af73551ce",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/@types/puppeteer/index.d.ts": {
-        "version": "690e105b28b0ac9f20e26b39f4a5ebb6fdafea7056468a4c29a3248b4ad8aea0",
-        "signature": "690e105b28b0ac9f20e26b39f4a5ebb6fdafea7056468a4c29a3248b4ad8aea0",
+      "../node_modules/puppeteer/lib/types.d.ts": {
+        "version": "4eaedf492de62832984d7efb89c4f67e2011d2dc6a9283ef9bb2049d96fc5f4f",
+        "signature": "4eaedf492de62832984d7efb89c4f67e2011d2dc6a9283ef9bb2049d96fc5f4f",
         "affectsGlobalScope": false
       },
       "../node_modules/tree-kill/index.d.ts": {
@@ -462,7 +452,7 @@
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
-        "version": "ffa3872d2628adf971215c07b6f40d06ef9c9a186e20c8ed6e7d1e79e8f21672",
+        "version": "7498cc03d44cd8a8bcb205195e70e85f24b3b280af96d4707e768a924f7851ad",
         "signature": "1d2ab60f5a75c81baf6d209c8759ac00532a9881d374301425759ad66066ecb7",
         "affectsGlobalScope": false
       },
@@ -1074,29 +1064,6 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/@types/puppeteer/devicedescriptors.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
-      ],
-      "../node_modules/@types/puppeteer/errors.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
-      ],
-      "../node_modules/@types/puppeteer/index.d.ts": [
-        "../node_modules/@types/node/child_process.d.ts",
-        "../node_modules/@types/node/events.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/ts3.7/index.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/puppeteer/devicedescriptors.d.ts",
-        "../node_modules/@types/puppeteer/errors.d.ts"
-      ],
       "../node_modules/@types/qs/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -1185,6 +1152,14 @@
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/puppeteer/lib/types.d.ts": [
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/ts3.7/index.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
       "../node_modules/tree-kill/index.d.ts": [
@@ -1398,7 +1373,7 @@
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/puppeteer/index.d.ts",
+        "../node_modules/puppeteer/lib/types.d.ts",
         "../node_modules/tree-kill/index.d.ts",
         "../src/blocked-hosts.ts",
         "../src/constants.ts",
@@ -1423,9 +1398,9 @@
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/puppeteer/index.d.ts",
         "../node_modules/i18n-iso-countries/index.d.ts",
         "../node_modules/moment-timezone/index.d.ts",
+        "../node_modules/puppeteer/lib/types.d.ts",
         "../src/interfaces.ts",
         "../src/typings/all-the-cities/index.d.ts"
       ]
@@ -1894,29 +1869,6 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
-      "../node_modules/@types/puppeteer/devicedescriptors.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
-      ],
-      "../node_modules/@types/puppeteer/errors.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
-      ],
-      "../node_modules/@types/puppeteer/index.d.ts": [
-        "../node_modules/@types/node/child_process.d.ts",
-        "../node_modules/@types/node/events.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/ts3.7/index.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/puppeteer/devicedescriptors.d.ts",
-        "../node_modules/@types/puppeteer/errors.d.ts"
-      ],
       "../node_modules/@types/qs/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2005,6 +1957,14 @@
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/puppeteer/lib/types.d.ts": [
+        "../node_modules/@types/node/child_process.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/ts3.7/index.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
       "../node_modules/tree-kill/index.d.ts": [
@@ -2262,9 +2222,6 @@
       "../node_modules/@types/node/vm.d.ts",
       "../node_modules/@types/node/worker_threads.d.ts",
       "../node_modules/@types/node/zlib.d.ts",
-      "../node_modules/@types/puppeteer/devicedescriptors.d.ts",
-      "../node_modules/@types/puppeteer/errors.d.ts",
-      "../node_modules/@types/puppeteer/index.d.ts",
       "../node_modules/@types/qs/index.d.ts",
       "../node_modules/@types/range-parser/index.d.ts",
       "../node_modules/@types/serve-static/index.d.ts",
@@ -2278,6 +2235,7 @@
       "../node_modules/moment/ts3.1-typings/moment.d.ts",
       "../node_modules/pretty-format/build/index.d.ts",
       "../node_modules/pretty-format/build/types.d.ts",
+      "../node_modules/puppeteer/lib/types.d.ts",
       "../node_modules/tree-kill/index.d.ts",
       "../node_modules/tslib/tslib.d.ts",
       "../node_modules/typescript/lib/lib.dom.d.ts",
