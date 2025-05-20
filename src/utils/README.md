@@ -2,103 +2,89 @@
 
 ## 📋 Overview
 
-The `utils` directory contains a collection of utility functions designed to help with text processing, date formatting, location parsing, and web scraping helper functions. These utilities provide reusable methods for handling common tasks such as cleaning text, identifying locations, formatting dates, and performing web scraping operations.
+The `utils` directory contains a collection of utility functions designed to handle various text processing, date formatting, location parsing, and web scraping helper tasks. These functions provide essential support for data manipulation, cleaning, and validation across the application.
 
 ## 🚀 Key Components
 
 ### Location Utilities
-- `getIsCity(text: string)`: Checks if a given text represents a valid city
-- `getIsCountry(text: string)`: Determines if a given text is a country name
-- `getLocationFromText(text: string)`: Parses location text into city, province, and country components
+- `getIsCountry(text)`: Validates if a given text represents a country name
+- `getIsCity(text)`: Checks if a text represents a valid city name
+- `getLocationFromText(text)`: Parses location strings into structured location objects
 
 ### Text Processing
-- `getCleanText(text: string)`: Cleans and normalizes text by removing line breaks, extra spaces, and unwanted phrases
-- `statusLog(section: string, message: string)`: Logs status messages for scraping processes
+- `getCleanText(text)`: Cleans and standardizes text by removing unnecessary whitespaces, line breaks, and specific phrases
+- `statusLog(section, message)`: Logs status messages for scraping processes
 
 ### Date Utilities
-- `formatDate(date: moment.MomentInput | string)`: Formats dates consistently
-- `getDurationInDays(startDate: string, endDate: string)`: Calculates duration between two dates in days
+- `formatDate(date)`: Converts dates to ISO string format
+- `getDurationInDays(startDate, endDate)`: Calculates duration between two dates
 
 ### Web Scraping Helpers
-- `autoScroll(page: Page)`: Automatically scrolls a web page
-- `getHostname(url: string)`: Extracts hostname from a URL
+- `autoScroll(page)`: Automatically scrolls a web page for dynamic content loading
+- `getHostname(url)`: Extracts the hostname from a URL
 
 ## 🔧 Dependencies
 
 - `moment-timezone`: Date and time manipulation
+- `puppeteer`: Web scraping and browser automation
 - `i18n-iso-countries`: Country name validation
 - `all-the-cities`: City name validation
-- `puppeteer`: Web scraping and browser automation (for `autoScroll`)
 
 ## 📦 Installation
 
 ```bash
-npm install moment-timezone i18n-iso-countries all-the-cities puppeteer
+npm install moment-timezone puppeteer i18n-iso-countries all-the-cities
 ```
 
-## 🛠️ Usage Examples
+## 🎯 Usage Examples
 
-### Location Detection
+### Location Parsing
 ```typescript
-// Identify location components
 const location = getLocationFromText('Amsterdam, North-Holland, Netherlands');
-console.log(location);
-// Output: { city: 'Amsterdam', province: 'North-Holland', country: 'Netherlands' }
+// Returns: { city: 'Amsterdam', province: 'North-Holland', country: 'Netherlands' }
 
-// Check if text represents a city or country
-console.log(getIsCity('New York')); // true
-console.log(getIsCountry('Netherlands')); // true
+const isCity = getIsCity('New York');  // Returns: true
+const isCountry = getIsCountry('Netherlands');  // Returns: true
 ```
 
 ### Text Cleaning
 ```typescript
-const cleanedText = getCleanText('Some text with  extra   spaces. See more');
-console.log(cleanedText); // 'Some text with extra spaces.'
+const cleanedText = getCleanText('Some text with  extra   spaces.');
+// Returns: 'Some text with extra spaces.'
 ```
 
 ### Date Handling
 ```typescript
-const duration = getDurationInDays('2019-12-31', '2020-12-31');
-console.log(duration); // 367 days
+const formattedDate = formatDate('2023-01-15');
+// Returns: ISO formatted date string
 
-const formattedDate = formatDate('2020-12-31');
-console.log(formattedDate); // ISO formatted date string
+const duration = getDurationInDays('2022-01-01', '2023-01-01');
+// Returns: 366 (days between dates)
 ```
 
 ### Web Scraping
 ```typescript
-// Scroll a page automatically
-await autoScroll(page);
-
-// Get hostname from URL
-const hostname = getHostname('https://example.com/page');
-console.log(hostname); // 'example.com'
+await autoScroll(page);  // Scrolls page to load dynamic content
+const hostname = getHostname('https://example.com/page');  // Returns: 'example.com'
 ```
 
-## 📝 Notes and Considerations
+## 🚨 Important Notes
 
-- Requires Node.js environment
-- Uses UTC timezone (Europe/Amsterdam) for consistent date parsing
-- Text processing methods are case-insensitive
-- Location detection relies on external libraries for validation
-
-## 🔍 Error Handling
-
-Most functions include basic error handling:
-- Returns `null` for invalid inputs
-- Handles edge cases like incomplete location information
-- Supports 'Present' as a valid date input
+- Functions assume English language input
+- Location parsing might have limitations with complex or ambiguous location strings
+- Date parsing uses moment.js with UTC timezone
 
 ## 🤝 Contributing
 
-1. Ensure all dependencies are installed
-2. Run tests to verify functionality
-3. Follow existing code style and patterns
-4. Add/update tests for new functionality
+- Ensure comprehensive test coverage
+- Follow existing code style and conventions
+- Update documentation when adding/modifying functions
 
-## 📄 License
+## 📜 License
 
-[Include your project's license information]
+[Insert project license information]
 
-## 🕒 Last Updated
-[Current Date]
+## 🔍 Version
+
+Current version: 1.0.0
+Last updated: [Current Date]
